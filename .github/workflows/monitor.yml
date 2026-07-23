@@ -5,6 +5,9 @@ on:
     - cron: '15 8 * * *'
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   monitor:
     runs-on: ubuntu-latest
@@ -17,7 +20,19 @@ jobs:
 
       - run: pip install -r requirements.txt
 
-      - run: python -m app.main
+      - name: Capture production
+        run: python -m app.main
         env:
           SOLAREDGE_SITE_ID: ${{ secrets.SOLAREDGE_SITE_ID }}
           SOLAREDGE_API_KEY: ${{ secrets.SOLAREDGE_API_KEY }}
+
+      - name: Build dashboard
+        run: python -m app.dashboard
+
+      - name: Commit updated data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/
+          git commit -m "Update SolarEdge production data" || exit 0
+          git push
