@@ -12,18 +12,20 @@ def main():
 
     result = client.daily_energy(today)
 
-    energy = 0
+    energy_wh = 0
+    energy_kwh = 0
 
     if isinstance(result, dict):
         values = result.get("values", [])
         if values:
-            energy = values[0].get("value", 0) / 1000
+            energy_wh = values[0].get("value", 0)
+            energy_kwh = energy_wh / 1000
 
     store.append(
         {
             "date": today,
             "period": "day",
-            "energy_kwh": energy,
+            "energy_kwh": energy_kwh,
             "source": "solaredge",
         }
     )
@@ -32,7 +34,7 @@ def main():
         json.dumps(
             {
                 "date": today,
-                "energy_kwh": energy,
+                "energy_kwh": energy_kwh,
             },
             indent=2,
         )
