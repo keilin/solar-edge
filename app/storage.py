@@ -9,32 +9,60 @@ class ProductionStore:
         self.path = Path(path)
         self.path.parent.mkdir(exist_ok=True)
 
-    def append(self, record):
-        existing = set()
-        if self.path.exists():
-            with self.path.open() as f:
-                for row in csv.DictReader(f):
-                    existing.add((row["date"], row["source"]))
+    def _records(self):
+        if not self.path.exists():
+            return []
 
-        key = (record["date"], record["source"])
+        with self.path.open() as f:
+            return list(csv.DictReader(f))
+
+    def append(self, record):
+        records = self._records()
+
+        key = (
+            record["date"],
+            record["period"],
+            record["source"],
+        )
+
+        existing = {
+            (
+                r["date"],
+                r.get("period", ""),
+                r["source"],
+            )
+            for r in records
+        }
+
         if key in existing:
             return
 
         exists = self.path.exists()
+
         with self.path.open("a", newline="") as f:
             writer = csv.DictWriter(
                 f,
-                fieldnames=["date", "energy_kwh", "source"],
+                fieldnames=[
+                    "date",
+                    "period",
+                    "energy_kwh",
+                    "source",
+                ],
             )
+
             if not exists:
                 writer.writeheader()
+
             writer.writerow(record)
 
     def import_csv(self, source):
         with open(source) as f:
             for row in csv.DictReader(f):
-                self.append({
-                    "date": row["month"],
-                    "energy_kwh": row["energy_kwh"],
-                    "source": "legacy",
-                })
+                self.append(
+                    {
+                        "date": f"{row['month']}-01",
+                        "period": "month",
+                        "energy_kwh": row["energy_kwh"],
+                        "source": "legacy",
+                    }
+                )
