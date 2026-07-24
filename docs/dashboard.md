@@ -1,6 +1,6 @@
 # SolarEdge Dashboard
 
-The monitor generates `data/dashboard.json` from collected production data.
+The monitor generates docs/dashboard.json from data/production.csv.
 
 Planned dashboard views:
 
