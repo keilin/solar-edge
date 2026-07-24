@@ -20,6 +20,9 @@ jobs:
 
       - run: pip install -r requirements.txt
 
+      - name: Import historical production
+        run: python -m app.importer
+
       - name: Capture production
         run: python -m app.main
         env:
