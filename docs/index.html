@@ -2,22 +2,60 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>SolarEdge Monitor</title>
+<title>SolarEdge Production Monitor</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+body { font-family: system-ui, sans-serif; margin: 40px; }
+.card { display:inline-block; padding:20px; margin:10px; border:1px solid #ddd; border-radius:8px; }
+canvas { max-width:900px; }
+</style>
 </head>
 <body>
 <h1>SolarEdge Production Monitor</h1>
-<div id="summary">Loading...</div>
+<div class="card">Records: <span id="records">-</span></div>
+<div class="card">Total kWh: <span id="total">-</span></div>
+<h2>Monthly Production</h2>
+<canvas id="monthly"></canvas>
+<h2>Annual Production</h2>
+<canvas id="annual"></canvas>
 <script>
 fetch('dashboard.json')
-  .then(r => r.json())
-  .then(data => {
-    document.getElementById('summary').innerHTML =
-      `Records collected: ${data.count}`;
-  })
-  .catch(err => {
-    document.getElementById('summary').innerHTML =
-      `Dashboard data unavailable: ${err}`;
+.then(r => r.json())
+.then(data => {
+  const records = data.records || [];
+  document.getElementById('records').textContent = records.length;
+
+  const totals = {};
+  records.forEach(r => {
+    const value = Number(r.energy_kwh || 0);
+    totals[r.date] = (totals[r.date] || 0) + value;
   });
+
+  const total = Object.values(totals).reduce((a,b) => a+b, 0);
+  document.getElementById('total').textContent = total.toFixed(1);
+
+  const annual = {};
+  Object.entries(totals).forEach(([d,v]) => {
+    const year = d.substring(0,4);
+    annual[year] = (annual[year] || 0) + v;
+  });
+
+  new Chart(document.getElementById('monthly'), {
+    type:'bar',
+    data:{
+      labels:Object.keys(totals),
+      datasets:[{label:'kWh',data:Object.values(totals)}]
+    }
+  });
+
+  new Chart(document.getElementById('annual'), {
+    type:'bar',
+    data:{
+      labels:Object.keys(annual),
+      datasets:[{label:'kWh',data:Object.values(annual)}]
+    }
+  });
+});
 </script>
 </body>
 </html>
