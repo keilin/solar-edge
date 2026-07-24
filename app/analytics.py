@@ -109,9 +109,18 @@ class Analytics:
 
         result = {}
 
+        current_year = str(date.today().year)
+
+        complete_years = {
+            year: value
+            for year, value in years.items()
+            if year != current_year
+        }
+        
         lifetime_average = (
-            sum(years.values()) / len(years)
-            if years
+            sum(complete_years.values())
+            / len(complete_years)
+            if complete_years
             else 0
         )
 
