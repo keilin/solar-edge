@@ -12,11 +12,20 @@ class AnomalyDetector:
 
         with open(self.path) as f:
             for row in csv.DictReader(f):
-                if row["period"] != "month":
+
+                if "period" not in row:
+                    period = (
+                        "month"
+                        if row["source"] == "legacy"
+                        else "day"
+                    )
+                else:
+                    period = row["period"]
+
+                if period != "month":
                     continue
 
-                key = row["date"][5:7]
-                months[key].append(
+                months[row["date"][5:7]].append(
                     float(row["energy_kwh"])
                 )
 
@@ -27,15 +36,12 @@ class AnomalyDetector:
                 continue
 
             avg = sum(values[:-1]) / len(values[:-1])
-            current = values[-1]
 
-            if current < avg * 0.75:
-                results.append(
-                    {
-                        "month": month,
-                        "actual": current,
-                        "average": round(avg, 1),
-                    }
-                )
+            if values[-1] < avg * 0.75:
+                results.append({
+                    "month": month,
+                    "actual": values[-1],
+                    "average": round(avg, 1),
+                })
 
         return results
