@@ -1,343 +1,332 @@
-<!doctype html>
-<html>
-
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<meta charset="utf-8">
-
-<title>
-SolarEdge Production Monitor
-</title>
+<meta charset="UTF-8">
+<title>SolarEdge Production Monitor</title>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
-
 body {
-    font-family: system-ui, sans-serif;
-    margin: 40px;
+    font-family: Arial, sans-serif;
+    margin: 30px;
+    background: #f7f7f7;
+}
+
+h1 {
+    margin-bottom: 5px;
 }
 
 .card {
-    display:inline-block;
-    padding:20px;
-    margin:10px;
-    border:1px solid #ddd;
-    border-radius:8px;
-}
-
-.controls {
-    margin:20px 0;
+    background: white;
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 8px;
 }
 
 canvas {
-    max-width:1000px;
+    max-width: 100%;
 }
 
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+    text-align: right;
+}
+
+th:first-child,
+td:first-child {
+    text-align: left;
+}
+
+.alert {
+    color: #b00020;
+}
 </style>
-
 </head>
-
 
 <body>
 
-<h1>
-SolarEdge Production Monitor
-</h1>
-
+<h1>SolarEdge Production Monitor</h1>
 
 <div class="card">
-Records:
-<span id="records"></span>
+    <div id="summary"></div>
 </div>
-
 
 <div class="card">
-Lifetime kWh:
-<span id="total"></span>
+    <h2>Year-over-Year Monthly Production</h2>
+    <canvas id="yearChart"></canvas>
 </div>
 
-
-<div class="controls">
-
-Compare:
-
-<select id="period">
-<option value="month">
-Month
-</option>
-
-<option value="quarter">
-Quarter
-</option>
-
-</select>
-
+<div class="card">
+    <h2>Average Monthly Production</h2>
+    <canvas id="monthlyAverageChart"></canvas>
 </div>
 
+<div class="card">
+    <h2>Current Year vs Expected</h2>
 
-<h2>
-Production Comparison
-</h2>
+    <table id="currentYearTable">
+        <thead>
+            <tr>
+                <th>Month</th>
+                <th>Actual kWh</th>
+                <th>Average kWh</th>
+                <th>Deviation</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
 
+<div class="card">
+    <h2>Annual Performance</h2>
 
-<canvas id="comparison"></canvas>
+    <table id="annualTable">
+        <thead>
+            <tr>
+                <th>Year</th>
+                <th>kWh</th>
+                <th>kWh/kWp</th>
+                <th>vs Average</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
 
-
-<h2>
-Specific Yield
-</h2>
-
-
-<canvas id="yield"></canvas>
-
-
-<h2>
-Alerts
-</h2>
-
-
-<div id="alerts"></div>
+<div class="card">
+    <h2>Alerts</h2>
+    <div id="alerts"></div>
+</div>
 
 
 <script>
 
-
-let dashboard;
-let chart;
+const monthNames = [
+    "",
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec"
+];
 
 
 fetch("dashboard.json")
-
-.then(r => r.json())
-
+.then(response => response.json())
 .then(data => {
 
-dashboard=data;
-
-
-document.getElementById(
-"records"
-).textContent=data.count;
-
-
-
-let total=0;
-
-Object.values(data.annual)
-.forEach(
-v=>total+=Number(v)
-);
-
-
-document.getElementById(
-"total"
-).textContent=
-total.toFixed(0);
-
-
-
-drawComparison();
-
-
-
-new Chart(
-document.getElementById("yield"),
-{
-type:"line",
-
-data:
-{
-labels:
-Object.keys(
-data.specific_yield
-),
-
-datasets:
-[
-{
-label:"kWh/kWp",
-
-data:
-Object.values(
-data.specific_yield
-)
-}
-]
-}
+    renderSummary(data);
+    renderYearChart(data);
+    renderAnalytics(data.analytics);
+    renderAlerts(data.anomalies);
 
 });
 
 
+function renderSummary(data) {
 
-document.getElementById(
-"alerts"
-).innerHTML =
-data.anomalies.length
-?
-JSON.stringify(
-data.anomalies,
-null,
-2
-)
-:
-"No anomalies detected";
-
-
-
-});
-
-
-document
-.getElementById("period")
-.addEventListener(
-"change",
-drawComparison
-);
-
-
-
-function drawComparison()
-{
-
-let mode =
-document.getElementById(
-"period"
-).value;
-
-
-let labels;
-
-
-if(mode==="month")
-{
-labels=[
-"Jan","Feb","Mar",
-"Apr","May","Jun",
-"Jul","Aug","Sep",
-"Oct","Nov","Dec"
-];
+    document.getElementById("summary").innerHTML = `
+        <b>Records collected:</b> ${data.count}<br>
+        <b>Years:</b> ${Object.keys(data.annual).join(", ")}
+    `;
 }
 
 
-if(mode==="quarter")
-{
-labels=[
-"Q1","Q2","Q3","Q4"
-];
+function renderYearChart(data) {
+
+    const years = Object.keys(data.monthly)
+        .sort();
+
+    const datasets = years.map(year => {
+
+        const values = [];
+
+        for (let m = 1; m <= 12; m++) {
+            values.push(
+                data.monthly[year][
+                    String(m).padStart(2,"0")
+                ] || null
+            );
+        }
+
+        return {
+            label: year,
+            data: values,
+            tension: 0.2
+        };
+
+    });
+
+
+    new Chart(
+        document.getElementById("yearChart"),
+        {
+            type: "line",
+            data: {
+                labels: monthNames.slice(1),
+                datasets
+            },
+            options: {
+                responsive: true,
+                interaction: {
+                    mode: "index",
+                    intersect: false
+                }
+            }
+        }
+    );
 }
 
 
+function renderAnalytics(analytics) {
 
-let datasets=[];
+    renderMonthlyAverage(
+        analytics.monthly_average
+    );
 
+    renderCurrentYear(
+        analytics.current_year_vs_average
+    );
 
-Object.entries(
-dashboard.monthly
-)
-
-.forEach(
-([year,months])=>{
-
-
-let values=[];
-
-
-if(mode==="month")
-{
-
-for(let i=1;i<=12;i++)
-{
-values.push(
-months[
-String(i).padStart(2,"0")
-] || 0
-);
-}
+    renderAnnual(
+        analytics.annual_summary
+    );
 
 }
 
 
-if(mode==="quarter")
-{
+function renderMonthlyAverage(avg) {
 
-let quarters=[
-[1,2,3],
-[4,5,6],
-[7,8,9],
-[10,11,12]
-];
-
-
-quarters.forEach(q=>{
-
-let sum=0;
-
-q.forEach(m=>{
-
-sum +=
-months[
-String(m).padStart(2,"0")
-] || 0;
-
-});
-
-values.push(sum);
-
-});
-
+    new Chart(
+        document.getElementById(
+            "monthlyAverageChart"
+        ),
+        {
+            type: "bar",
+            data: {
+                labels:
+                    Object.keys(avg)
+                    .map(m => monthNames[
+                        Number(m)
+                    ]),
+                datasets: [{
+                    label:
+                        "Average kWh",
+                    data:
+                        Object.values(avg)
+                }]
+            }
+        }
+    );
 }
 
 
+function renderCurrentYear(rows) {
 
-datasets.push(
-{
-label:year,
-data:values
-}
-);
+    const tbody =
+        document.querySelector(
+            "#currentYearTable tbody"
+        );
 
+    tbody.innerHTML = "";
 
-});
+    Object.entries(rows)
+    .forEach(([month, value]) => {
 
+        const sign =
+            value.deviation_pct >= 0
+            ? "+"
+            : "";
 
-if(chart)
-chart.destroy();
-
-
-chart=new Chart(
-document.getElementById(
-"comparison"
-),
-
-{
-type:"line",
-
-data:
-{
-labels:labels,
-
-datasets:datasets
-},
-
-options:
-{
-interaction:
-{
-mode:"index",
-intersect:false
-}
+        tbody.innerHTML += `
+        <tr>
+            <td>${monthNames[
+                Number(month)
+            ]}</td>
+            <td>${value.actual}</td>
+            <td>${value.average}</td>
+            <td>
+                ${sign}${value.deviation_pct}%
+            </td>
+        </tr>
+        `;
+    });
 }
 
+
+function renderAnnual(rows) {
+
+    const tbody =
+        document.querySelector(
+            "#annualTable tbody"
+        );
+
+    tbody.innerHTML = "";
+
+    Object.entries(rows)
+    .forEach(([year,value]) => {
+
+        const sign =
+            value.vs_average_pct >= 0
+            ? "+"
+            : "";
+
+        tbody.innerHTML += `
+        <tr>
+            <td>${year}</td>
+            <td>${value.energy_kwh}</td>
+            <td>${value.specific_yield}</td>
+            <td>
+                ${sign}${value.vs_average_pct}%
+            </td>
+        </tr>
+        `;
+    });
 }
 
-);
+
+function renderAlerts(alerts) {
+
+    const div =
+        document.getElementById(
+            "alerts"
+        );
+
+    if (!alerts || alerts.length === 0) {
+        div.innerHTML =
+            "No anomalies detected.";
+        return;
+    }
+
+    div.innerHTML =
+        alerts.map(a => `
+            <div class="alert">
+            ${monthNames[
+                Number(a.month)
+            ]}:
+            ${a.actual} kWh
+            vs average
+            ${a.average} kWh
+            </div>
+        `).join("");
 
 }
-
 
 </script>
 
-
 </body>
-
 </html>
