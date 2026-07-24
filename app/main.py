@@ -17,9 +17,14 @@ def main():
 
     if isinstance(result, dict):
         values = result.get("values", [])
+        print(values[0])
         if values:
-            energy_wh = float(values[0].get("value", 0))
-            energy_kwh = energy_wh / 1000
+            raw_value = values[0].get("value")
+
+        if raw_value is None:
+            energy_kwh = 0
+        else:
+            energy_kwh = float(raw_value) / 1000
 
     store.append(
         {
