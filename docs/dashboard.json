@@ -1633,5 +1633,116 @@
     "2024": 2799.1,
     "2025": 2778.6
   },
-  "anomalies": []
+  "anomalies": [],
+  "analytics": {
+    "monthly_average": {
+      "01": 247.2,
+      "02": 334.2,
+      "03": 423.3,
+      "04": 583.4,
+      "05": 676.1,
+      "06": 687.1,
+      "07": 667.5,
+      "08": 599.2,
+      "09": 495.0,
+      "10": 412.0,
+      "11": 291.3,
+      "12": 234.6
+    },
+    "current_year_vs_average": {
+      "01": {
+        "actual": 259.8,
+        "average": 247.2,
+        "deviation_pct": 5.1,
+        "percent_of_expected": 105.1
+      },
+      "02": {
+        "actual": 273.9,
+        "average": 334.2,
+        "deviation_pct": -18.0,
+        "percent_of_expected": 82.0
+      },
+      "03": {
+        "actual": 131.7,
+        "average": 423.3,
+        "deviation_pct": -68.9,
+        "percent_of_expected": 31.1
+      },
+      "04": {
+        "actual": 555.7,
+        "average": 583.4,
+        "deviation_pct": -4.8,
+        "percent_of_expected": 95.2
+      },
+      "05": {
+        "actual": 663.7,
+        "average": 676.1,
+        "deviation_pct": -1.8,
+        "percent_of_expected": 98.2
+      },
+      "06": {
+        "actual": 638.5,
+        "average": 687.1,
+        "deviation_pct": -7.1,
+        "percent_of_expected": 92.9
+      }
+    },
+    "annual_summary": {
+      "2016": {
+        "energy_kwh": 5332.5,
+        "specific_yield": 1343.2,
+        "vs_average_pct": 0.6
+      },
+      "2017": {
+        "energy_kwh": 5219.4,
+        "specific_yield": 1314.7,
+        "vs_average_pct": -1.5
+      },
+      "2018": {
+        "energy_kwh": 5756.9,
+        "specific_yield": 1450.1,
+        "vs_average_pct": 8.6
+      },
+      "2019": {
+        "energy_kwh": 5489.4,
+        "specific_yield": 1382.7,
+        "vs_average_pct": 3.6
+      },
+      "2020": {
+        "energy_kwh": 5645.6,
+        "specific_yield": 1422.1,
+        "vs_average_pct": 6.5
+      },
+      "2021": {
+        "energy_kwh": 5726.7,
+        "specific_yield": 1442.5,
+        "vs_average_pct": 8.1
+      },
+      "2022": {
+        "energy_kwh": 5943.5,
+        "specific_yield": 1497.1,
+        "vs_average_pct": 12.1
+      },
+      "2023": {
+        "energy_kwh": 5589.6,
+        "specific_yield": 1408.0,
+        "vs_average_pct": 5.5
+      },
+      "2024": {
+        "energy_kwh": 5556.2,
+        "specific_yield": 1399.5,
+        "vs_average_pct": 4.8
+      },
+      "2025": {
+        "energy_kwh": 5515.5,
+        "specific_yield": 1389.3,
+        "vs_average_pct": 4.1
+      },
+      "2026": {
+        "energy_kwh": 2523.3,
+        "specific_yield": 635.6,
+        "vs_average_pct": -52.4
+      }
+    }
+  }
 }
