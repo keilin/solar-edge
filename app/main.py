@@ -17,7 +17,7 @@ def main():
     if isinstance(result, dict):
         values = result.get("values", [])
         if values:
-            energy = values[0].get("value", 0)
+            energy = values[0].get("value", 0) / 1000
 
     store.append(
         {
