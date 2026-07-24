@@ -2,60 +2,88 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>SolarEdge Production Monitor</title>
+<title>SolarEdge Monitor</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<style>
-body { font-family: system-ui, sans-serif; margin: 40px; }
-.card { display:inline-block; padding:20px; margin:10px; border:1px solid #ddd; border-radius:8px; }
-canvas { max-width:900px; }
-</style>
 </head>
+
 <body>
+
 <h1>SolarEdge Production Monitor</h1>
-<div class="card">Records: <span id="records">-</span></div>
-<div class="card">Total kWh: <span id="total">-</span></div>
-<h2>Monthly Production</h2>
-<canvas id="monthly"></canvas>
+
+<h2>Summary</h2>
+
+<div id="summary"></div>
+
 <h2>Annual Production</h2>
 <canvas id="annual"></canvas>
+
+<h2>Specific Yield (kWh/kWp)</h2>
+<canvas id="yield"></canvas>
+
+<h2>Anomalies</h2>
+<div id="alerts"></div>
+
+
 <script>
-fetch('dashboard.json')
+
+fetch("dashboard.json")
 .then(r => r.json())
 .then(data => {
-  const records = data.records || [];
-  document.getElementById('records').textContent = records.length;
 
-  const totals = {};
-  records.forEach(r => {
-    const value = Number(r.energy_kwh || 0);
-    totals[r.date] = (totals[r.date] || 0) + value;
-  });
+const annual = data.annual;
 
-  const total = Object.values(totals).reduce((a,b) => a+b, 0);
-  document.getElementById('total').textContent = total.toFixed(1);
+document.getElementById("summary").innerHTML =
+`
+Records: ${data.count}<br>
+Lifetime production:
+${Object.values(annual)
+.reduce((a,b)=>a+Number(b),0)
+.toFixed(0)} kWh
+`;
 
-  const annual = {};
-  Object.entries(totals).forEach(([d,v]) => {
-    const year = d.substring(0,4);
-    annual[year] = (annual[year] || 0) + v;
-  });
 
-  new Chart(document.getElementById('monthly'), {
-    type:'bar',
-    data:{
-      labels:Object.keys(totals),
-      datasets:[{label:'kWh',data:Object.values(totals)}]
-    }
-  });
-
-  new Chart(document.getElementById('annual'), {
-    type:'bar',
-    data:{
-      labels:Object.keys(annual),
-      datasets:[{label:'kWh',data:Object.values(annual)}]
-    }
-  });
+new Chart(
+document.getElementById("annual"),
+{
+type:"bar",
+data:{
+labels:Object.keys(annual),
+datasets:[
+{
+label:"kWh",
+data:Object.values(annual)
+}
+]
+}
 });
+
+
+new Chart(
+document.getElementById("yield"),
+{
+type:"line",
+data:{
+labels:Object.keys(data.yield),
+datasets:[
+{
+label:"kWh/kWp",
+data:Object.values(data.yield)
+}
+]
+}
+});
+
+
+document.getElementById("alerts").innerHTML =
+data.anomalies.length
+?
+JSON.stringify(data.anomalies)
+:
+"No anomalies detected";
+
+});
+
 </script>
+
 </body>
 </html>
