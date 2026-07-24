@@ -18,7 +18,7 @@ def main():
     if isinstance(result, dict):
         values = result.get("values", [])
         if values:
-            energy_wh = values[0].get("value", 0)
+            energy_wh = float(values[0].get("value", 0))
             energy_kwh = energy_wh / 1000
 
     store.append(
