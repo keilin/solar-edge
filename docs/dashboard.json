@@ -1,0 +1,1748 @@
+{
+  "records": [
+    {
+      "date": "2026-07-23",
+      "period": "day",
+      "energy_kwh": "22.759",
+      "source": "solaredge"
+    },
+    {
+      "date": "2016-03",
+      "period": "month",
+      "energy_kwh": "391.066",
+      "source": "legacy"
+    },
+    {
+      "date": "2016-04",
+      "period": "month",
+      "energy_kwh": "554.042",
+      "source": "legacy"
+    },
+    {
+      "date": "2016-05",
+      "period": "month",
+      "energy_kwh": "734.349",
+      "source": "legacy"
+    },
+    {
+      "date": "2016-06",
+      "period": "month",
+      "energy_kwh": "737.698",
+      "source": "legacy"
+    },
+    {
+      "date": "2016-07",
+      "period": "month",
+      "energy_kwh": "769.782",
+      "source": "legacy"
+    },
+    {
+      "date": "2016-08",
+      "period": "month",
+      "energy_kwh": "572.007",
+      "source": "legacy"
+    },
+    {
+      "date": "2016-09",
+      "period": "month",
+      "energy_kwh": "505.471",
+      "source": "legacy"
+    },
+    {
+      "date": "2016-10",
+      "period": "month",
+      "energy_kwh": "464.068",
+      "source": "legacy"
+    },
+    {
+      "date": "2016-11",
+      "period": "month",
+      "energy_kwh": "289.698",
+      "source": "legacy"
+    },
+    {
+      "date": "2016-12",
+      "period": "month",
+      "energy_kwh": "314.324",
+      "source": "legacy"
+    },
+    {
+      "date": "2017-03",
+      "period": "month",
+      "energy_kwh": "391.066",
+      "source": "legacy"
+    },
+    {
+      "date": "2017-04",
+      "period": "month",
+      "energy_kwh": "599.855",
+      "source": "legacy"
+    },
+    {
+      "date": "2017-05",
+      "period": "month",
+      "energy_kwh": "666.481",
+      "source": "legacy"
+    },
+    {
+      "date": "2017-06",
+      "period": "month",
+      "energy_kwh": "737.698",
+      "source": "legacy"
+    },
+    {
+      "date": "2017-07",
+      "period": "month",
+      "energy_kwh": "684.673",
+      "source": "legacy"
+    },
+    {
+      "date": "2017-08",
+      "period": "month",
+      "energy_kwh": "572.007",
+      "source": "legacy"
+    },
+    {
+      "date": "2017-09",
+      "period": "month",
+      "energy_kwh": "505.471",
+      "source": "legacy"
+    },
+    {
+      "date": "2017-10",
+      "period": "month",
+      "energy_kwh": "458.089",
+      "source": "legacy"
+    },
+    {
+      "date": "2017-11",
+      "period": "month",
+      "energy_kwh": "289.698",
+      "source": "legacy"
+    },
+    {
+      "date": "2017-12",
+      "period": "month",
+      "energy_kwh": "314.324",
+      "source": "legacy"
+    },
+    {
+      "date": "2018-01",
+      "period": "month",
+      "energy_kwh": "241.179",
+      "source": "legacy"
+    },
+    {
+      "date": "2018-02",
+      "period": "month",
+      "energy_kwh": "413.247",
+      "source": "legacy"
+    },
+    {
+      "date": "2018-03",
+      "period": "month",
+      "energy_kwh": "455.719",
+      "source": "legacy"
+    },
+    {
+      "date": "2018-04",
+      "period": "month",
+      "energy_kwh": "559.846",
+      "source": "legacy"
+    },
+    {
+      "date": "2018-05",
+      "period": "month",
+      "energy_kwh": "587.414",
+      "source": "legacy"
+    },
+    {
+      "date": "2018-06",
+      "period": "month",
+      "energy_kwh": "752.206",
+      "source": "legacy"
+    },
+    {
+      "date": "2018-07",
+      "period": "month",
+      "energy_kwh": "714.447",
+      "source": "legacy"
+    },
+    {
+      "date": "2018-08",
+      "period": "month",
+      "energy_kwh": "587.815",
+      "source": "legacy"
+    },
+    {
+      "date": "2018-09",
+      "period": "month",
+      "energy_kwh": "545.708",
+      "source": "legacy"
+    },
+    {
+      "date": "2018-10",
+      "period": "month",
+      "energy_kwh": "441.275",
+      "source": "legacy"
+    },
+    {
+      "date": "2018-11",
+      "period": "month",
+      "energy_kwh": "280.019",
+      "source": "legacy"
+    },
+    {
+      "date": "2018-12",
+      "period": "month",
+      "energy_kwh": "178.054",
+      "source": "legacy"
+    },
+    {
+      "date": "2019-01",
+      "period": "month",
+      "energy_kwh": "141.120",
+      "source": "legacy"
+    },
+    {
+      "date": "2019-02",
+      "period": "month",
+      "energy_kwh": "272.324",
+      "source": "legacy"
+    },
+    {
+      "date": "2019-03",
+      "period": "month",
+      "energy_kwh": "459.402",
+      "source": "legacy"
+    },
+    {
+      "date": "2019-04",
+      "period": "month",
+      "energy_kwh": "525.321",
+      "source": "legacy"
+    },
+    {
+      "date": "2019-05",
+      "period": "month",
+      "energy_kwh": "658.029",
+      "source": "legacy"
+    },
+    {
+      "date": "2019-06",
+      "period": "month",
+      "energy_kwh": "663.771",
+      "source": "legacy"
+    },
+    {
+      "date": "2019-07",
+      "period": "month",
+      "energy_kwh": "669.621",
+      "source": "legacy"
+    },
+    {
+      "date": "2019-08",
+      "period": "month",
+      "energy_kwh": "675.824",
+      "source": "legacy"
+    },
+    {
+      "date": "2019-09",
+      "period": "month",
+      "energy_kwh": "537.425",
+      "source": "legacy"
+    },
+    {
+      "date": "2019-10",
+      "period": "month",
+      "energy_kwh": "386.150",
+      "source": "legacy"
+    },
+    {
+      "date": "2019-11",
+      "period": "month",
+      "energy_kwh": "312.537",
+      "source": "legacy"
+    },
+    {
+      "date": "2019-12",
+      "period": "month",
+      "energy_kwh": "187.911",
+      "source": "legacy"
+    },
+    {
+      "date": "2020-01",
+      "period": "month",
+      "energy_kwh": "265.764",
+      "source": "legacy"
+    },
+    {
+      "date": "2020-02",
+      "period": "month",
+      "energy_kwh": "412.646",
+      "source": "legacy"
+    },
+    {
+      "date": "2020-03",
+      "period": "month",
+      "energy_kwh": "418.978",
+      "source": "legacy"
+    },
+    {
+      "date": "2020-04",
+      "period": "month",
+      "energy_kwh": "625.219",
+      "source": "legacy"
+    },
+    {
+      "date": "2020-05",
+      "period": "month",
+      "energy_kwh": "699.355",
+      "source": "legacy"
+    },
+    {
+      "date": "2020-06",
+      "period": "month",
+      "energy_kwh": "672.219",
+      "source": "legacy"
+    },
+    {
+      "date": "2020-07",
+      "period": "month",
+      "energy_kwh": "626.766",
+      "source": "legacy"
+    },
+    {
+      "date": "2020-08",
+      "period": "month",
+      "energy_kwh": "547.286",
+      "source": "legacy"
+    },
+    {
+      "date": "2020-09",
+      "period": "month",
+      "energy_kwh": "426.173",
+      "source": "legacy"
+    },
+    {
+      "date": "2020-10",
+      "period": "month",
+      "energy_kwh": "378.698",
+      "source": "legacy"
+    },
+    {
+      "date": "2020-11",
+      "period": "month",
+      "energy_kwh": "306.574",
+      "source": "legacy"
+    },
+    {
+      "date": "2020-12",
+      "period": "month",
+      "energy_kwh": "265.969",
+      "source": "legacy"
+    },
+    {
+      "date": "2021-01",
+      "period": "month",
+      "energy_kwh": "260.626",
+      "source": "legacy"
+    },
+    {
+      "date": "2021-02",
+      "period": "month",
+      "energy_kwh": "345.636",
+      "source": "legacy"
+    },
+    {
+      "date": "2021-03",
+      "period": "month",
+      "energy_kwh": "530.934",
+      "source": "legacy"
+    },
+    {
+      "date": "2021-04",
+      "period": "month",
+      "energy_kwh": "623.819",
+      "source": "legacy"
+    },
+    {
+      "date": "2021-05",
+      "period": "month",
+      "energy_kwh": "687.521",
+      "source": "legacy"
+    },
+    {
+      "date": "2021-06",
+      "period": "month",
+      "energy_kwh": "678.129",
+      "source": "legacy"
+    },
+    {
+      "date": "2021-07",
+      "period": "month",
+      "energy_kwh": "650.498",
+      "source": "legacy"
+    },
+    {
+      "date": "2021-08",
+      "period": "month",
+      "energy_kwh": "550.542",
+      "source": "legacy"
+    },
+    {
+      "date": "2021-09",
+      "period": "month",
+      "energy_kwh": "473.732",
+      "source": "legacy"
+    },
+    {
+      "date": "2021-10",
+      "period": "month",
+      "energy_kwh": "396.565",
+      "source": "legacy"
+    },
+    {
+      "date": "2021-11",
+      "period": "month",
+      "energy_kwh": "323.724",
+      "source": "legacy"
+    },
+    {
+      "date": "2021-12",
+      "period": "month",
+      "energy_kwh": "204.934",
+      "source": "legacy"
+    },
+    {
+      "date": "2022-01",
+      "period": "month",
+      "energy_kwh": "291.571",
+      "source": "legacy"
+    },
+    {
+      "date": "2022-02",
+      "period": "month",
+      "energy_kwh": "386.674",
+      "source": "legacy"
+    },
+    {
+      "date": "2022-03",
+      "period": "month",
+      "energy_kwh": "509.582",
+      "source": "legacy"
+    },
+    {
+      "date": "2022-04",
+      "period": "month",
+      "energy_kwh": "673.701",
+      "source": "legacy"
+    },
+    {
+      "date": "2022-05",
+      "period": "month",
+      "energy_kwh": "601.036",
+      "source": "legacy"
+    },
+    {
+      "date": "2022-06",
+      "period": "month",
+      "energy_kwh": "675.993",
+      "source": "legacy"
+    },
+    {
+      "date": "2022-07",
+      "period": "month",
+      "energy_kwh": "693.036",
+      "source": "legacy"
+    },
+    {
+      "date": "2022-08",
+      "period": "month",
+      "energy_kwh": "637.009",
+      "source": "legacy"
+    },
+    {
+      "date": "2022-09",
+      "period": "month",
+      "energy_kwh": "511.067",
+      "source": "legacy"
+    },
+    {
+      "date": "2022-10",
+      "period": "month",
+      "energy_kwh": "426.214",
+      "source": "legacy"
+    },
+    {
+      "date": "2022-11",
+      "period": "month",
+      "energy_kwh": "313.103",
+      "source": "legacy"
+    },
+    {
+      "date": "2022-12",
+      "period": "month",
+      "energy_kwh": "224.554",
+      "source": "legacy"
+    },
+    {
+      "date": "2023-01",
+      "period": "month",
+      "energy_kwh": "245.256",
+      "source": "legacy"
+    },
+    {
+      "date": "2023-02",
+      "period": "month",
+      "energy_kwh": "328.979",
+      "source": "legacy"
+    },
+    {
+      "date": "2023-03",
+      "period": "month",
+      "energy_kwh": "435.906",
+      "source": "legacy"
+    },
+    {
+      "date": "2023-04",
+      "period": "month",
+      "energy_kwh": "586.399",
+      "source": "legacy"
+    },
+    {
+      "date": "2023-05",
+      "period": "month",
+      "energy_kwh": "688.595",
+      "source": "legacy"
+    },
+    {
+      "date": "2023-06",
+      "period": "month",
+      "energy_kwh": "635.413",
+      "source": "legacy"
+    },
+    {
+      "date": "2023-07",
+      "period": "month",
+      "energy_kwh": "666.068",
+      "source": "legacy"
+    },
+    {
+      "date": "2023-08",
+      "period": "month",
+      "energy_kwh": "588.633",
+      "source": "legacy"
+    },
+    {
+      "date": "2023-09",
+      "period": "month",
+      "energy_kwh": "494.976",
+      "source": "legacy"
+    },
+    {
+      "date": "2023-10",
+      "period": "month",
+      "energy_kwh": "418.192",
+      "source": "legacy"
+    },
+    {
+      "date": "2023-11",
+      "period": "month",
+      "energy_kwh": "281.904",
+      "source": "legacy"
+    },
+    {
+      "date": "2023-12",
+      "period": "month",
+      "energy_kwh": "219.241",
+      "source": "legacy"
+    },
+    {
+      "date": "2024-01",
+      "period": "month",
+      "energy_kwh": "219.293",
+      "source": "legacy"
+    },
+    {
+      "date": "2024-02",
+      "period": "month",
+      "energy_kwh": "295.914",
+      "source": "legacy"
+    },
+    {
+      "date": "2024-03",
+      "period": "month",
+      "energy_kwh": "470.118",
+      "source": "legacy"
+    },
+    {
+      "date": "2024-04",
+      "period": "month",
+      "energy_kwh": "556.967",
+      "source": "legacy"
+    },
+    {
+      "date": "2024-05",
+      "period": "month",
+      "energy_kwh": "725.291",
+      "source": "legacy"
+    },
+    {
+      "date": "2024-06",
+      "period": "month",
+      "energy_kwh": "704.772",
+      "source": "legacy"
+    },
+    {
+      "date": "2024-07",
+      "period": "month",
+      "energy_kwh": "600.042",
+      "source": "legacy"
+    },
+    {
+      "date": "2024-08",
+      "period": "month",
+      "energy_kwh": "628.579",
+      "source": "legacy"
+    },
+    {
+      "date": "2024-09",
+      "period": "month",
+      "energy_kwh": "495.618",
+      "source": "legacy"
+    },
+    {
+      "date": "2024-10",
+      "period": "month",
+      "energy_kwh": "375.271",
+      "source": "legacy"
+    },
+    {
+      "date": "2024-11",
+      "period": "month",
+      "energy_kwh": "257.656",
+      "source": "legacy"
+    },
+    {
+      "date": "2024-12",
+      "period": "month",
+      "energy_kwh": "226.646",
+      "source": "legacy"
+    },
+    {
+      "date": "2025-01",
+      "period": "month",
+      "energy_kwh": "300.339",
+      "source": "legacy"
+    },
+    {
+      "date": "2025-02",
+      "period": "month",
+      "energy_kwh": "278.781",
+      "source": "legacy"
+    },
+    {
+      "date": "2025-03",
+      "period": "month",
+      "energy_kwh": "462.097",
+      "source": "legacy"
+    },
+    {
+      "date": "2025-04",
+      "period": "month",
+      "energy_kwh": "556.967",
+      "source": "legacy"
+    },
+    {
+      "date": "2025-05",
+      "period": "month",
+      "energy_kwh": "725.291",
+      "source": "legacy"
+    },
+    {
+      "date": "2025-06",
+      "period": "month",
+      "energy_kwh": "661.937",
+      "source": "legacy"
+    },
+    {
+      "date": "2025-07",
+      "period": "month",
+      "energy_kwh": "600.042",
+      "source": "legacy"
+    },
+    {
+      "date": "2025-08",
+      "period": "month",
+      "energy_kwh": "632.778",
+      "source": "legacy"
+    },
+    {
+      "date": "2025-09",
+      "period": "month",
+      "energy_kwh": "454.060",
+      "source": "legacy"
+    },
+    {
+      "date": "2025-10",
+      "period": "month",
+      "energy_kwh": "375.271",
+      "source": "legacy"
+    },
+    {
+      "date": "2025-11",
+      "period": "month",
+      "energy_kwh": "257.656",
+      "source": "legacy"
+    },
+    {
+      "date": "2025-12",
+      "period": "month",
+      "energy_kwh": "210.271",
+      "source": "legacy"
+    },
+    {
+      "date": "2026-01",
+      "period": "month",
+      "energy_kwh": "259.798",
+      "source": "legacy"
+    },
+    {
+      "date": "2026-02",
+      "period": "month",
+      "energy_kwh": "273.886",
+      "source": "legacy"
+    },
+    {
+      "date": "2026-03",
+      "period": "month",
+      "energy_kwh": "131.746",
+      "source": "legacy"
+    },
+    {
+      "date": "2016-03",
+      "period": "month",
+      "energy_kwh": "391.066",
+      "source": "legacy"
+    },
+    {
+      "date": "2016-04",
+      "period": "month",
+      "energy_kwh": "554.042",
+      "source": "legacy"
+    },
+    {
+      "date": "2016-05",
+      "period": "month",
+      "energy_kwh": "734.349",
+      "source": "legacy"
+    },
+    {
+      "date": "2016-06",
+      "period": "month",
+      "energy_kwh": "737.698",
+      "source": "legacy"
+    },
+    {
+      "date": "2016-07",
+      "period": "month",
+      "energy_kwh": "769.782",
+      "source": "legacy"
+    },
+    {
+      "date": "2016-08",
+      "period": "month",
+      "energy_kwh": "572.007",
+      "source": "legacy"
+    },
+    {
+      "date": "2016-09",
+      "period": "month",
+      "energy_kwh": "505.471",
+      "source": "legacy"
+    },
+    {
+      "date": "2016-10",
+      "period": "month",
+      "energy_kwh": "464.068",
+      "source": "legacy"
+    },
+    {
+      "date": "2016-11",
+      "period": "month",
+      "energy_kwh": "289.698",
+      "source": "legacy"
+    },
+    {
+      "date": "2016-12",
+      "period": "month",
+      "energy_kwh": "314.324",
+      "source": "legacy"
+    },
+    {
+      "date": "2017-03",
+      "period": "month",
+      "energy_kwh": "391.066",
+      "source": "legacy"
+    },
+    {
+      "date": "2017-04",
+      "period": "month",
+      "energy_kwh": "599.855",
+      "source": "legacy"
+    },
+    {
+      "date": "2017-05",
+      "period": "month",
+      "energy_kwh": "666.481",
+      "source": "legacy"
+    },
+    {
+      "date": "2017-06",
+      "period": "month",
+      "energy_kwh": "737.698",
+      "source": "legacy"
+    },
+    {
+      "date": "2017-07",
+      "period": "month",
+      "energy_kwh": "684.673",
+      "source": "legacy"
+    },
+    {
+      "date": "2017-08",
+      "period": "month",
+      "energy_kwh": "572.007",
+      "source": "legacy"
+    },
+    {
+      "date": "2017-09",
+      "period": "month",
+      "energy_kwh": "505.471",
+      "source": "legacy"
+    },
+    {
+      "date": "2017-10",
+      "period": "month",
+      "energy_kwh": "458.089",
+      "source": "legacy"
+    },
+    {
+      "date": "2017-11",
+      "period": "month",
+      "energy_kwh": "289.698",
+      "source": "legacy"
+    },
+    {
+      "date": "2017-12",
+      "period": "month",
+      "energy_kwh": "314.324",
+      "source": "legacy"
+    },
+    {
+      "date": "2018-01",
+      "period": "month",
+      "energy_kwh": "241.179",
+      "source": "legacy"
+    },
+    {
+      "date": "2018-02",
+      "period": "month",
+      "energy_kwh": "413.247",
+      "source": "legacy"
+    },
+    {
+      "date": "2018-03",
+      "period": "month",
+      "energy_kwh": "455.719",
+      "source": "legacy"
+    },
+    {
+      "date": "2018-04",
+      "period": "month",
+      "energy_kwh": "559.846",
+      "source": "legacy"
+    },
+    {
+      "date": "2018-05",
+      "period": "month",
+      "energy_kwh": "587.414",
+      "source": "legacy"
+    },
+    {
+      "date": "2018-06",
+      "period": "month",
+      "energy_kwh": "752.206",
+      "source": "legacy"
+    },
+    {
+      "date": "2018-07",
+      "period": "month",
+      "energy_kwh": "714.447",
+      "source": "legacy"
+    },
+    {
+      "date": "2018-08",
+      "period": "month",
+      "energy_kwh": "587.815",
+      "source": "legacy"
+    },
+    {
+      "date": "2018-09",
+      "period": "month",
+      "energy_kwh": "545.708",
+      "source": "legacy"
+    },
+    {
+      "date": "2018-10",
+      "period": "month",
+      "energy_kwh": "441.275",
+      "source": "legacy"
+    },
+    {
+      "date": "2018-11",
+      "period": "month",
+      "energy_kwh": "280.019",
+      "source": "legacy"
+    },
+    {
+      "date": "2018-12",
+      "period": "month",
+      "energy_kwh": "178.054",
+      "source": "legacy"
+    },
+    {
+      "date": "2019-01",
+      "period": "month",
+      "energy_kwh": "141.120",
+      "source": "legacy"
+    },
+    {
+      "date": "2019-02",
+      "period": "month",
+      "energy_kwh": "272.324",
+      "source": "legacy"
+    },
+    {
+      "date": "2019-03",
+      "period": "month",
+      "energy_kwh": "459.402",
+      "source": "legacy"
+    },
+    {
+      "date": "2019-04",
+      "period": "month",
+      "energy_kwh": "525.321",
+      "source": "legacy"
+    },
+    {
+      "date": "2019-05",
+      "period": "month",
+      "energy_kwh": "658.029",
+      "source": "legacy"
+    },
+    {
+      "date": "2019-06",
+      "period": "month",
+      "energy_kwh": "663.771",
+      "source": "legacy"
+    },
+    {
+      "date": "2019-07",
+      "period": "month",
+      "energy_kwh": "669.621",
+      "source": "legacy"
+    },
+    {
+      "date": "2019-08",
+      "period": "month",
+      "energy_kwh": "675.824",
+      "source": "legacy"
+    },
+    {
+      "date": "2019-09",
+      "period": "month",
+      "energy_kwh": "537.425",
+      "source": "legacy"
+    },
+    {
+      "date": "2019-10",
+      "period": "month",
+      "energy_kwh": "386.150",
+      "source": "legacy"
+    },
+    {
+      "date": "2019-11",
+      "period": "month",
+      "energy_kwh": "312.537",
+      "source": "legacy"
+    },
+    {
+      "date": "2019-12",
+      "period": "month",
+      "energy_kwh": "187.911",
+      "source": "legacy"
+    },
+    {
+      "date": "2020-01",
+      "period": "month",
+      "energy_kwh": "265.764",
+      "source": "legacy"
+    },
+    {
+      "date": "2020-02",
+      "period": "month",
+      "energy_kwh": "412.646",
+      "source": "legacy"
+    },
+    {
+      "date": "2020-03",
+      "period": "month",
+      "energy_kwh": "418.978",
+      "source": "legacy"
+    },
+    {
+      "date": "2020-04",
+      "period": "month",
+      "energy_kwh": "625.219",
+      "source": "legacy"
+    },
+    {
+      "date": "2020-05",
+      "period": "month",
+      "energy_kwh": "699.355",
+      "source": "legacy"
+    },
+    {
+      "date": "2020-06",
+      "period": "month",
+      "energy_kwh": "672.219",
+      "source": "legacy"
+    },
+    {
+      "date": "2020-07",
+      "period": "month",
+      "energy_kwh": "626.766",
+      "source": "legacy"
+    },
+    {
+      "date": "2020-08",
+      "period": "month",
+      "energy_kwh": "547.286",
+      "source": "legacy"
+    },
+    {
+      "date": "2020-09",
+      "period": "month",
+      "energy_kwh": "426.173",
+      "source": "legacy"
+    },
+    {
+      "date": "2020-10",
+      "period": "month",
+      "energy_kwh": "378.698",
+      "source": "legacy"
+    },
+    {
+      "date": "2020-11",
+      "period": "month",
+      "energy_kwh": "306.574",
+      "source": "legacy"
+    },
+    {
+      "date": "2020-12",
+      "period": "month",
+      "energy_kwh": "265.969",
+      "source": "legacy"
+    },
+    {
+      "date": "2021-01",
+      "period": "month",
+      "energy_kwh": "260.626",
+      "source": "legacy"
+    },
+    {
+      "date": "2021-02",
+      "period": "month",
+      "energy_kwh": "345.636",
+      "source": "legacy"
+    },
+    {
+      "date": "2021-03",
+      "period": "month",
+      "energy_kwh": "530.934",
+      "source": "legacy"
+    },
+    {
+      "date": "2021-04",
+      "period": "month",
+      "energy_kwh": "623.819",
+      "source": "legacy"
+    },
+    {
+      "date": "2021-05",
+      "period": "month",
+      "energy_kwh": "687.521",
+      "source": "legacy"
+    },
+    {
+      "date": "2021-06",
+      "period": "month",
+      "energy_kwh": "678.129",
+      "source": "legacy"
+    },
+    {
+      "date": "2021-07",
+      "period": "month",
+      "energy_kwh": "650.498",
+      "source": "legacy"
+    },
+    {
+      "date": "2021-08",
+      "period": "month",
+      "energy_kwh": "550.542",
+      "source": "legacy"
+    },
+    {
+      "date": "2021-09",
+      "period": "month",
+      "energy_kwh": "473.732",
+      "source": "legacy"
+    },
+    {
+      "date": "2021-10",
+      "period": "month",
+      "energy_kwh": "396.565",
+      "source": "legacy"
+    },
+    {
+      "date": "2021-11",
+      "period": "month",
+      "energy_kwh": "323.724",
+      "source": "legacy"
+    },
+    {
+      "date": "2021-12",
+      "period": "month",
+      "energy_kwh": "204.934",
+      "source": "legacy"
+    },
+    {
+      "date": "2022-01",
+      "period": "month",
+      "energy_kwh": "291.571",
+      "source": "legacy"
+    },
+    {
+      "date": "2022-02",
+      "period": "month",
+      "energy_kwh": "386.674",
+      "source": "legacy"
+    },
+    {
+      "date": "2022-03",
+      "period": "month",
+      "energy_kwh": "509.582",
+      "source": "legacy"
+    },
+    {
+      "date": "2022-04",
+      "period": "month",
+      "energy_kwh": "673.701",
+      "source": "legacy"
+    },
+    {
+      "date": "2022-05",
+      "period": "month",
+      "energy_kwh": "601.036",
+      "source": "legacy"
+    },
+    {
+      "date": "2022-06",
+      "period": "month",
+      "energy_kwh": "675.993",
+      "source": "legacy"
+    },
+    {
+      "date": "2022-07",
+      "period": "month",
+      "energy_kwh": "693.036",
+      "source": "legacy"
+    },
+    {
+      "date": "2022-08",
+      "period": "month",
+      "energy_kwh": "637.009",
+      "source": "legacy"
+    },
+    {
+      "date": "2022-09",
+      "period": "month",
+      "energy_kwh": "511.067",
+      "source": "legacy"
+    },
+    {
+      "date": "2022-10",
+      "period": "month",
+      "energy_kwh": "426.214",
+      "source": "legacy"
+    },
+    {
+      "date": "2022-11",
+      "period": "month",
+      "energy_kwh": "313.103",
+      "source": "legacy"
+    },
+    {
+      "date": "2022-12",
+      "period": "month",
+      "energy_kwh": "224.554",
+      "source": "legacy"
+    },
+    {
+      "date": "2023-01",
+      "period": "month",
+      "energy_kwh": "245.256",
+      "source": "legacy"
+    },
+    {
+      "date": "2023-02",
+      "period": "month",
+      "energy_kwh": "328.979",
+      "source": "legacy"
+    },
+    {
+      "date": "2023-03",
+      "period": "month",
+      "energy_kwh": "435.906",
+      "source": "legacy"
+    },
+    {
+      "date": "2023-04",
+      "period": "month",
+      "energy_kwh": "586.399",
+      "source": "legacy"
+    },
+    {
+      "date": "2023-05",
+      "period": "month",
+      "energy_kwh": "688.595",
+      "source": "legacy"
+    },
+    {
+      "date": "2023-06",
+      "period": "month",
+      "energy_kwh": "635.413",
+      "source": "legacy"
+    },
+    {
+      "date": "2023-07",
+      "period": "month",
+      "energy_kwh": "666.068",
+      "source": "legacy"
+    },
+    {
+      "date": "2023-08",
+      "period": "month",
+      "energy_kwh": "588.633",
+      "source": "legacy"
+    },
+    {
+      "date": "2023-09",
+      "period": "month",
+      "energy_kwh": "494.976",
+      "source": "legacy"
+    },
+    {
+      "date": "2023-10",
+      "period": "month",
+      "energy_kwh": "418.192",
+      "source": "legacy"
+    },
+    {
+      "date": "2023-11",
+      "period": "month",
+      "energy_kwh": "281.904",
+      "source": "legacy"
+    },
+    {
+      "date": "2023-12",
+      "period": "month",
+      "energy_kwh": "219.241",
+      "source": "legacy"
+    },
+    {
+      "date": "2024-01",
+      "period": "month",
+      "energy_kwh": "219.293",
+      "source": "legacy"
+    },
+    {
+      "date": "2024-02",
+      "period": "month",
+      "energy_kwh": "295.914",
+      "source": "legacy"
+    },
+    {
+      "date": "2024-03",
+      "period": "month",
+      "energy_kwh": "470.118",
+      "source": "legacy"
+    },
+    {
+      "date": "2024-04",
+      "period": "month",
+      "energy_kwh": "556.967",
+      "source": "legacy"
+    },
+    {
+      "date": "2024-05",
+      "period": "month",
+      "energy_kwh": "725.291",
+      "source": "legacy"
+    },
+    {
+      "date": "2024-06",
+      "period": "month",
+      "energy_kwh": "704.772",
+      "source": "legacy"
+    },
+    {
+      "date": "2024-07",
+      "period": "month",
+      "energy_kwh": "600.042",
+      "source": "legacy"
+    },
+    {
+      "date": "2024-08",
+      "period": "month",
+      "energy_kwh": "628.579",
+      "source": "legacy"
+    },
+    {
+      "date": "2024-09",
+      "period": "month",
+      "energy_kwh": "495.618",
+      "source": "legacy"
+    },
+    {
+      "date": "2024-10",
+      "period": "month",
+      "energy_kwh": "375.271",
+      "source": "legacy"
+    },
+    {
+      "date": "2024-11",
+      "period": "month",
+      "energy_kwh": "257.656",
+      "source": "legacy"
+    },
+    {
+      "date": "2024-12",
+      "period": "month",
+      "energy_kwh": "226.646",
+      "source": "legacy"
+    },
+    {
+      "date": "2025-01",
+      "period": "month",
+      "energy_kwh": "300.339",
+      "source": "legacy"
+    },
+    {
+      "date": "2025-02",
+      "period": "month",
+      "energy_kwh": "278.781",
+      "source": "legacy"
+    },
+    {
+      "date": "2025-03",
+      "period": "month",
+      "energy_kwh": "462.097",
+      "source": "legacy"
+    },
+    {
+      "date": "2025-04",
+      "period": "month",
+      "energy_kwh": "556.967",
+      "source": "legacy"
+    },
+    {
+      "date": "2025-05",
+      "period": "month",
+      "energy_kwh": "725.291",
+      "source": "legacy"
+    },
+    {
+      "date": "2025-06",
+      "period": "month",
+      "energy_kwh": "661.937",
+      "source": "legacy"
+    },
+    {
+      "date": "2025-07",
+      "period": "month",
+      "energy_kwh": "600.042",
+      "source": "legacy"
+    },
+    {
+      "date": "2025-08",
+      "period": "month",
+      "energy_kwh": "632.778",
+      "source": "legacy"
+    },
+    {
+      "date": "2025-09",
+      "period": "month",
+      "energy_kwh": "454.060",
+      "source": "legacy"
+    },
+    {
+      "date": "2025-10",
+      "period": "month",
+      "energy_kwh": "375.271",
+      "source": "legacy"
+    },
+    {
+      "date": "2025-11",
+      "period": "month",
+      "energy_kwh": "257.656",
+      "source": "legacy"
+    },
+    {
+      "date": "2025-12",
+      "period": "month",
+      "energy_kwh": "210.271",
+      "source": "legacy"
+    },
+    {
+      "date": "2026-01",
+      "period": "month",
+      "energy_kwh": "271.529",
+      "source": "legacy"
+    },
+    {
+      "date": "2026-02",
+      "period": "month",
+      "energy_kwh": "288.034",
+      "source": "legacy"
+    },
+    {
+      "date": "2026-03",
+      "period": "month",
+      "energy_kwh": "576.393",
+      "source": "legacy"
+    },
+    {
+      "date": "2026-04",
+      "period": "month",
+      "energy_kwh": "555.684",
+      "source": "legacy"
+    },
+    {
+      "date": "2026-05",
+      "period": "month",
+      "energy_kwh": "663.665",
+      "source": "legacy"
+    },
+    {
+      "date": "2026-06",
+      "period": "month",
+      "energy_kwh": "638.533",
+      "source": "legacy"
+    },
+    {
+      "date": "2026-07-24",
+      "period": "day",
+      "energy_kwh": "0",
+      "source": "solaredge"
+    }
+  ],
+  "count": 243,
+  "monthly": {
+    "2026": {
+      "07": 22.759,
+      "01": 271.529,
+      "02": 288.034,
+      "03": 576.393,
+      "04": 555.684,
+      "05": 663.665,
+      "06": 638.533
+    },
+    "2016": {
+      "03": 391.066,
+      "04": 554.042,
+      "05": 734.349,
+      "06": 737.698,
+      "07": 769.782,
+      "08": 572.007,
+      "09": 505.471,
+      "10": 464.068,
+      "11": 289.698,
+      "12": 314.324
+    },
+    "2017": {
+      "03": 391.066,
+      "04": 599.855,
+      "05": 666.481,
+      "06": 737.698,
+      "07": 684.673,
+      "08": 572.007,
+      "09": 505.471,
+      "10": 458.089,
+      "11": 289.698,
+      "12": 314.324
+    },
+    "2018": {
+      "01": 241.179,
+      "02": 413.247,
+      "03": 455.719,
+      "04": 559.846,
+      "05": 587.414,
+      "06": 752.206,
+      "07": 714.447,
+      "08": 587.815,
+      "09": 545.708,
+      "10": 441.275,
+      "11": 280.019,
+      "12": 178.054
+    },
+    "2019": {
+      "01": 141.12,
+      "02": 272.324,
+      "03": 459.402,
+      "04": 525.321,
+      "05": 658.029,
+      "06": 663.771,
+      "07": 669.621,
+      "08": 675.824,
+      "09": 537.425,
+      "10": 386.15,
+      "11": 312.537,
+      "12": 187.911
+    },
+    "2020": {
+      "01": 265.764,
+      "02": 412.646,
+      "03": 418.978,
+      "04": 625.219,
+      "05": 699.355,
+      "06": 672.219,
+      "07": 626.766,
+      "08": 547.286,
+      "09": 426.173,
+      "10": 378.698,
+      "11": 306.574,
+      "12": 265.969
+    },
+    "2021": {
+      "01": 260.626,
+      "02": 345.636,
+      "03": 530.934,
+      "04": 623.819,
+      "05": 687.521,
+      "06": 678.129,
+      "07": 650.498,
+      "08": 550.542,
+      "09": 473.732,
+      "10": 396.565,
+      "11": 323.724,
+      "12": 204.934
+    },
+    "2022": {
+      "01": 291.571,
+      "02": 386.674,
+      "03": 509.582,
+      "04": 673.701,
+      "05": 601.036,
+      "06": 675.993,
+      "07": 693.036,
+      "08": 637.009,
+      "09": 511.067,
+      "10": 426.214,
+      "11": 313.103,
+      "12": 224.554
+    },
+    "2023": {
+      "01": 245.256,
+      "02": 328.979,
+      "03": 435.906,
+      "04": 586.399,
+      "05": 688.595,
+      "06": 635.413,
+      "07": 666.068,
+      "08": 588.633,
+      "09": 494.976,
+      "10": 418.192,
+      "11": 281.904,
+      "12": 219.241
+    },
+    "2024": {
+      "01": 219.293,
+      "02": 295.914,
+      "03": 470.118,
+      "04": 556.967,
+      "05": 725.291,
+      "06": 704.772,
+      "07": 600.042,
+      "08": 628.579,
+      "09": 495.618,
+      "10": 375.271,
+      "11": 257.656,
+      "12": 226.646
+    },
+    "2025": {
+      "01": 300.339,
+      "02": 278.781,
+      "03": 462.097,
+      "04": 556.967,
+      "05": 725.291,
+      "06": 661.937,
+      "07": 600.042,
+      "08": 632.778,
+      "09": 454.06,
+      "10": 375.271,
+      "11": 257.656,
+      "12": 210.271
+    }
+  },
+  "annual": {
+    "2026": 3682.0269999999996,
+    "2016": 10665.01,
+    "2017": 10438.724,
+    "2018": 11513.858,
+    "2019": 10978.869999999999,
+    "2020": 11291.294000000002,
+    "2021": 11453.32,
+    "2022": 11887.079999999998,
+    "2023": 11179.124,
+    "2024": 11112.334,
+    "2025": 11030.980000000001
+  },
+  "specific_yield": {
+    "2026": 927.5,
+    "2016": 2686.4,
+    "2017": 2629.4,
+    "2018": 2900.2,
+    "2019": 2765.5,
+    "2020": 2844.2,
+    "2021": 2885.0,
+    "2022": 2994.2,
+    "2023": 2815.9,
+    "2024": 2799.1,
+    "2025": 2778.6
+  },
+  "anomalies": [],
+  "analytics": {
+    "monthly_average": {
+      "01": 247.2,
+      "02": 334.2,
+      "03": 423.3,
+      "04": 583.4,
+      "05": 676.1,
+      "06": 687.1,
+      "07": 667.5,
+      "08": 599.2,
+      "09": 495.0,
+      "10": 412.0,
+      "11": 291.3,
+      "12": 234.6
+    },
+    "current_year_vs_average": {
+      "01": {
+        "actual": 259.8,
+        "average": 247.2,
+        "deviation_pct": 5.1,
+        "percent_of_expected": 105.1
+      },
+      "02": {
+        "actual": 273.9,
+        "average": 334.2,
+        "deviation_pct": -18.0,
+        "percent_of_expected": 82.0
+      },
+      "03": {
+        "actual": 131.7,
+        "average": 423.3,
+        "deviation_pct": -68.9,
+        "percent_of_expected": 31.1
+      },
+      "04": {
+        "actual": 555.7,
+        "average": 583.4,
+        "deviation_pct": -4.8,
+        "percent_of_expected": 95.2
+      },
+      "05": {
+        "actual": 663.7,
+        "average": 676.1,
+        "deviation_pct": -1.8,
+        "percent_of_expected": 98.2
+      },
+      "06": {
+        "actual": 638.5,
+        "average": 687.1,
+        "deviation_pct": -7.1,
+        "percent_of_expected": 92.9
+      }
+    },
+    "annual_summary": {
+      "2016": {
+        "energy_kwh": 5332.5,
+        "specific_yield": 1343.2,
+        "vs_average_pct": -4.4
+      },
+      "2017": {
+        "energy_kwh": 5219.4,
+        "specific_yield": 1314.7,
+        "vs_average_pct": -6.4
+      },
+      "2018": {
+        "energy_kwh": 5756.9,
+        "specific_yield": 1450.1,
+        "vs_average_pct": 3.2
+      },
+      "2019": {
+        "energy_kwh": 5489.4,
+        "specific_yield": 1382.7,
+        "vs_average_pct": -1.6
+      },
+      "2020": {
+        "energy_kwh": 5645.6,
+        "specific_yield": 1422.1,
+        "vs_average_pct": 1.2
+      },
+      "2021": {
+        "energy_kwh": 5726.7,
+        "specific_yield": 1442.5,
+        "vs_average_pct": 2.7
+      },
+      "2022": {
+        "energy_kwh": 5943.5,
+        "specific_yield": 1497.1,
+        "vs_average_pct": 6.6
+      },
+      "2023": {
+        "energy_kwh": 5589.6,
+        "specific_yield": 1408.0,
+        "vs_average_pct": 0.2
+      },
+      "2024": {
+        "energy_kwh": 5556.2,
+        "specific_yield": 1399.5,
+        "vs_average_pct": -0.4
+      },
+      "2025": {
+        "energy_kwh": 5515.5,
+        "specific_yield": 1389.3,
+        "vs_average_pct": -1.1
+      },
+      "2026": {
+        "energy_kwh": 2523.3,
+        "specific_yield": 635.6,
+        "vs_average_pct": -54.8
+      }
+    }
+  }
+}
