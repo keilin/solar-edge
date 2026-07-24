@@ -8,11 +8,15 @@
 <h1>SolarEdge Production Monitor</h1>
 <div id="summary">Loading...</div>
 <script>
-fetch('../data/dashboard.json')
+fetch('dashboard.json')
   .then(r => r.json())
   .then(data => {
     document.getElementById('summary').innerHTML =
       `Records collected: ${data.count}`;
+  })
+  .catch(err => {
+    document.getElementById('summary').innerHTML =
+      `Dashboard data unavailable: ${err}`;
   });
 </script>
 </body>
