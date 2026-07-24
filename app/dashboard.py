@@ -5,7 +5,7 @@ from pathlib import Path
 
 from app.performance import Performance
 from app.anomaly import AnomalyDetector
-
+from app.analytics import Analytics
 
 def build_dashboard(
     input_file="data/production.csv",
@@ -40,6 +40,7 @@ def build_dashboard(
         "annual": Performance().annual(),
         "specific_yield": Performance().annual_specific_yield(),
         "anomalies": AnomalyDetector().monthly_anomalies(),
+        "analytics": Analytics().summary(),
     }
 
     Path(output_file).parent.mkdir(exist_ok=True)
