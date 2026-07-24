@@ -16,24 +16,22 @@ def build_dashboard(
 
     with open(input_file) as f:
         for row in csv.DictReader(f):
-
-            # Support old schema
             if "period" not in row:
                 row["period"] = (
-                    "month"
-                    if row["source"] == "legacy"
-                    else "day"
+                    "month" if row.get("source") == "legacy" else "day"
                 )
 
             records.append(row)
 
             if row["period"] == "month":
-                year = row["date"][:4]
-                month = row["date"][5:7]
+                key = row["date"][:7]
+                monthly[key[:4]][key[5:7]] = float(row["energy_kwh"])
 
-                monthly[year][month] = float(
-                    row["energy_kwh"]
-                )
+            elif row["period"] == "day":
+                key = row["date"][:7]
+                year = key[:4]
+                month = key[5:7]
+                monthly[year][month] = monthly[year].get(month, 0) + float(row["energy_kwh"])
 
     data = {
         "records": records,
@@ -44,13 +42,8 @@ def build_dashboard(
         "anomalies": AnomalyDetector().monthly_anomalies(),
     }
 
-    Path(output_file).parent.mkdir(
-        exist_ok=True
-    )
-
-    Path(output_file).write_text(
-        json.dumps(data, indent=2)
-    )
+    Path(output_file).parent.mkdir(exist_ok=True)
+    Path(output_file).write_text(json.dumps(data, indent=2))
 
 
 if __name__ == "__main__":

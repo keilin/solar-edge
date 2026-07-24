@@ -12,19 +12,12 @@ def main():
 
     result = client.daily_energy(today)
 
-    energy_wh = 0
     energy_kwh = 0
 
     if isinstance(result, dict):
         values = result.get("values", [])
-        print(values[0])
         if values:
-            raw_value = values[0].get("value")
-
-        if raw_value is None:
-            energy_kwh = 0
-        else:
-            energy_kwh = float(raw_value) / 1000
+            energy_kwh = float(values[0].get("value") or 0) / 1000
 
     store.append(
         {
@@ -35,15 +28,29 @@ def main():
         }
     )
 
-    print(
-        json.dumps(
-            {
-                "date": today,
-                "energy_kwh": energy_kwh,
-            },
-            indent=2,
-        )
+    month = today[:7]
+    monthly = client.monthly_energy(
+        f"{month}-01",
+        today,
     )
+
+    if isinstance(monthly, dict):
+        values = monthly.get("values", [])
+        if values:
+            month_kwh = float(values[0].get("value") or 0) / 1000
+            store.append(
+                {
+                    "date": month,
+                    "period": "month",
+                    "energy_kwh": month_kwh,
+                    "source": "solaredge",
+                }
+            )
+
+    print(json.dumps({
+        "date": today,
+        "energy_kwh": energy_kwh,
+    }, indent=2))
 
 
 if __name__ == "__main__":
