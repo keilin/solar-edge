@@ -235,7 +235,10 @@ date,period,energy_kwh,source
 2025-10,month,375.271,legacy
 2025-11,month,257.656,legacy
 2025-12,month,210.271,legacy
-2026-01,month,259.798,legacy
-2026-02,month,273.886,legacy
-2026-03,month,131.746,legacy
+2026-01,month,271.529,legacy
+2026-02,month,288.034,legacy
+2026-03,month,576.393,legacy
+2026-04,month,555.684,legacy
+2026-05,month,663.665,legacy
+2026-06,month,638.533,legacy
 2026-07-24,day,0,solaredge
