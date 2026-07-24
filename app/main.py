@@ -4,28 +4,39 @@ from datetime import date
 import json
 
 
-def extract_energy(overview):
-    data = overview.get("overview", {})
-    return data.get("lastDayEnergy", {}).get("energy", 0)
-
-
 def main():
     client = SolarEdgeClient()
     store = ProductionStore()
 
-    overview = client.overview()
-    energy = extract_energy(overview)
+    today = date.today().isoformat()
 
-    store.append({
-        "date": str(date.today()),
-        "energy_kwh": energy,
-        "source": "solaredge",
-    })
+    result = client.daily_energy(today)
 
-    print(json.dumps({
-        "date": str(date.today()),
-        "energy_kwh": energy,
-    }, indent=2))
+    energy = 0
+
+    if isinstance(result, dict):
+        values = result.get("values", [])
+        if values:
+            energy = values[0].get("value", 0)
+
+    store.append(
+        {
+            "date": today,
+            "period": "day",
+            "energy_kwh": energy,
+            "source": "solaredge",
+        }
+    )
+
+    print(
+        json.dumps(
+            {
+                "date": today,
+                "energy_kwh": energy,
+            },
+            indent=2,
+        )
+    )
 
 
 if __name__ == "__main__":
