@@ -16,31 +16,32 @@ def build_dashboard(
 
     with open(input_file) as f:
         for row in csv.DictReader(f):
+
+            # Support old schema
+            if "period" not in row:
+                row["period"] = (
+                    "month"
+                    if row["source"] == "legacy"
+                    else "day"
+                )
+
             records.append(row)
 
             if row["period"] == "month":
                 year = row["date"][:4]
                 month = row["date"][5:7]
 
-                monthly[year][month] = float(row["energy_kwh"])
-
-    # Ensure JSON serialization
-    monthly = dict(monthly)
+                monthly[year][month] = float(
+                    row["energy_kwh"]
+                )
 
     data = {
         "records": records,
         "count": len(records),
-
-        # SolarEdge-style comparison data
-        "monthly": monthly,
-
+        "monthly": dict(monthly),
         "annual": Performance().annual(),
-
-        "specific_yield": Performance()
-            .annual_specific_yield(),
-
-        "anomalies": AnomalyDetector()
-            .monthly_anomalies(),
+        "specific_yield": Performance().annual_specific_yield(),
+        "anomalies": AnomalyDetector().monthly_anomalies(),
     }
 
     Path(output_file).parent.mkdir(
