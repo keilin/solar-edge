@@ -25,23 +25,30 @@ class AnomalyDetector:
                 if period != "month":
                     continue
 
-                months[row["date"][5:7]].append(
-                    float(row["energy_kwh"])
-                )
+                energy = float(row["energy_kwh"])
+
+                if energy > 0:
+                    months[row["date"][5:7]].append(energy)
 
         results = []
 
         for month, values in months.items():
-            if len(values) < 3:
+
+            # Need at least 3 historical comparisons
+            if len(values) < 4:
                 continue
 
-            avg = sum(values[:-1]) / len(values[:-1])
+            current = values[-1]
+            history = values[:-1]
 
-            if values[-1] < avg * 0.75:
-                results.append({
-                    "month": month,
-                    "actual": values[-1],
-                    "average": round(avg, 1),
-                })
+            avg = sum(history) / len(history)
 
+            if current < avg * 0.75:
+                results.append(
+                    {
+                        "month": month,
+                        "actual": current,
+                        "average": round(avg, 1),
+                    }
+                )
         return results
