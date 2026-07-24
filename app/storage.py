@@ -60,7 +60,7 @@ class ProductionStore:
             for row in csv.DictReader(f):
                 self.append(
                     {
-                        "date": f"{row['month']}-01",
+                        "date": row["month"],
                         "period": "month",
                         "energy_kwh": row["energy_kwh"],
                         "source": "legacy",
