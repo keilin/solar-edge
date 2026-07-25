@@ -617,9 +617,15 @@
       "period": "month",
       "energy_kwh": "334.704",
       "source": "solaredge"
+    },
+    {
+      "date": "2026-07-25",
+      "period": "day",
+      "energy_kwh": "0.0",
+      "source": "solaredge"
     }
   ],
-  "count": 103,
+  "count": 104,
   "monthly": {
     "2018": {
       "01": 255.408,
@@ -743,7 +749,12 @@
       "07": 334.704
     }
   },
-  "week": [],
+  "week": [
+    {
+      "date": "2026-07-25",
+      "energy_kwh": 0.0
+    }
+  ],
   "annual": {
     "2018": 6063.079,
     "2019": 5705.465,
