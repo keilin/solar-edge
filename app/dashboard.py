@@ -33,10 +33,24 @@ def build_dashboard(
                 month = key[5:7]
                 monthly[year][month] = monthly[year].get(month, 0) + float(row["energy_kwh"])
 
+    daily = sorted(
+        (row for row in records if row["period"] == "day"),
+        key=lambda row: row["date"],
+    )
+
+    week = [
+        {
+            "date": row["date"],
+            "energy_kwh": float(row["energy_kwh"]),
+        }
+        for row in daily[-7:]
+    ]
+
     data = {
         "records": records,
         "count": len(records),
         "monthly": dict(monthly),
+        "week": week,
         "annual": Performance().annual(),
         "specific_yield": Performance().annual_specific_yield(),
         "anomalies": AnomalyDetector().monthly_anomalies(),

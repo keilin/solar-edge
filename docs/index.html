@@ -69,6 +69,12 @@ td:first-child {
 </div>
 
 <div class="card">
+    <h2>Last 7 Days</h2>
+    <canvas id="weekChart"></canvas>
+    <p id="weekEmpty" style="display:none; color:#666;">No daily data yet.</p>
+</div>
+
+<div class="card">
     <h2>Year-over-Year Monthly Production</h2>
     <canvas id="yearChart"></canvas>
 </div>
@@ -118,6 +124,19 @@ td:first-child {
 
 <script>
 
+// Validated categorical palette (see dataviz color-formula) — fixed hue
+// order, distinguishable under color-vision deficiency simulation.
+const CATEGORICAL_COLORS = [
+    "#2a78d6", // blue
+    "#eb6834", // orange
+    "#1baf7a", // aqua
+    "#eda100", // yellow
+    "#e87ba4", // magenta
+    "#008300", // green
+    "#4a3aa7", // violet
+    "#e34948", // red
+];
+
 const monthNames = [
     "",
     "Jan",
@@ -140,11 +159,45 @@ fetch("dashboard.json")
 .then(data => {
 
     renderSummary(data);
+    renderWeekChart(data.week);
     renderYearChart(data);
     renderAnalytics(data.analytics);
     renderAlerts(data.anomalies);
 
 });
+
+
+function renderWeekChart(week) {
+
+    const canvas = document.getElementById("weekChart");
+
+    if (!week || week.length === 0) {
+        canvas.style.display = "none";
+        document.getElementById("weekEmpty").style.display = "block";
+        return;
+    }
+
+    new Chart(
+        canvas,
+        {
+            type: "bar",
+            data: {
+                labels: week.map(d => d.date),
+                datasets: [{
+                    label: "kWh",
+                    data: week.map(d => d.energy_kwh),
+                    backgroundColor: CATEGORICAL_COLORS[0]
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false }
+                }
+            }
+        }
+    );
+}
 
 
 function renderSummary(data) {
@@ -161,7 +214,7 @@ function renderYearChart(data) {
     const years = Object.keys(data.monthly)
         .sort();
 
-    const datasets = years.map(year => {
+    const datasets = years.map((year, i) => {
 
         const values = [];
 
@@ -173,10 +226,17 @@ function renderYearChart(data) {
             );
         }
 
+        // Cycle the fixed hue order; once it repeats, dash the
+        // line so reused hues stay distinguishable at a glance.
+        const color = CATEGORICAL_COLORS[i % CATEGORICAL_COLORS.length];
+
         return {
             label: year,
             data: values,
-            tension: 0.2
+            tension: 0.2,
+            borderColor: color,
+            backgroundColor: color,
+            borderDash: i >= CATEGORICAL_COLORS.length ? [6, 4] : []
         };
 
     });

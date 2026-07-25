@@ -9,17 +9,8 @@ Add repository secrets:
 - `SOLAREDGE_SITE_ID`
 - `SOLAREDGE_API_KEY`
 
-## Historical import
-
-Convert the old spreadsheet export to:
-
-```csv
-month,energy_kwh
-2024-01,350
-```
-
-Then use the storage importer to load history.
-
 ## Running
 
-The GitHub Action runs daily and stores production history in `data/production.csv`.
+The GitHub Action runs daily, appends to `data/production.csv`, and rebuilds
+`docs/dashboard.json` from it. `data/production.csv` is the single source of
+truth for both persistence and dashboard generation.
