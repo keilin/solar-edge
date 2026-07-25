@@ -260,11 +260,18 @@ fetch("dashboard.json")
 });
 
 
+function fmt(val, decimals = 1) {
+    return val.toLocaleString("en-US", {
+        minimumFractionDigits: decimals,
+        maximumFractionDigits: decimals,
+    });
+}
+
 function kwh(val) {
     if (val >= 1000) {
-        return `${(val / 1000).toFixed(2)} <span class="unit">MWh</span>`;
+        return `${fmt(val / 1000, 2)} <span class="unit">MWh</span>`;
     }
-    return `${Math.round(val)} <span class="unit">kWh</span>`;
+    return `${fmt(val, 0)} <span class="unit">kWh</span>`;
 }
 
 function usd(val) {
@@ -456,11 +463,11 @@ function renderCurrentYear(rows) {
             </td>
 
             <td>
-                ${value.actual}
+                ${fmt(value.actual)}
             </td>
 
             <td>
-                ${value.average}
+                ${fmt(value.average)}
             </td>
 
             <td class="${
@@ -503,11 +510,11 @@ function renderAnnual(rows) {
             </td>
 
             <td>
-                ${value.energy_kwh}
+                ${fmt(value.energy_kwh)}
             </td>
 
             <td>
-                ${value.specific_yield}
+                ${fmt(value.specific_yield)}
             </td>
 
             <td class="${

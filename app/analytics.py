@@ -124,7 +124,7 @@ class Analytics:
             else 0
         )
 
-        for year, energy in sorted(years.items()):
+        for year, energy in sorted(complete_years.items()):
             result[year] = {
                 "energy_kwh": round(energy, 1),
                 "specific_yield": round(

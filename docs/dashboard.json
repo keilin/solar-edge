@@ -1087,11 +1087,6 @@
         "energy_kwh": 5704.3,
         "specific_yield": 1436.9,
         "vs_average_pct": -2.8
-      },
-      "2026": {
-        "energy_kwh": 3328.5,
-        "specific_yield": 838.4,
-        "vs_average_pct": -43.3
       }
     }
   }
