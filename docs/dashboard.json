@@ -619,13 +619,193 @@
       "source": "solaredge"
     },
     {
+      "date": "2026-06-24",
+      "period": "day",
+      "energy_kwh": "17.585",
+      "source": "solaredge"
+    },
+    {
+      "date": "2026-06-25",
+      "period": "day",
+      "energy_kwh": "13.994",
+      "source": "solaredge"
+    },
+    {
+      "date": "2026-06-26",
+      "period": "day",
+      "energy_kwh": "3.477",
+      "source": "solaredge"
+    },
+    {
+      "date": "2026-06-27",
+      "period": "day",
+      "energy_kwh": "27.586",
+      "source": "solaredge"
+    },
+    {
+      "date": "2026-06-28",
+      "period": "day",
+      "energy_kwh": "22.414",
+      "source": "solaredge"
+    },
+    {
+      "date": "2026-06-29",
+      "period": "day",
+      "energy_kwh": "26.027",
+      "source": "solaredge"
+    },
+    {
+      "date": "2026-06-30",
+      "period": "day",
+      "energy_kwh": "13.451",
+      "source": "solaredge"
+    },
+    {
+      "date": "2026-07-01",
+      "period": "day",
+      "energy_kwh": "23.17",
+      "source": "solaredge"
+    },
+    {
+      "date": "2026-07-02",
+      "period": "day",
+      "energy_kwh": "23.281",
+      "source": "solaredge"
+    },
+    {
+      "date": "2026-07-03",
+      "period": "day",
+      "energy_kwh": "12.212",
+      "source": "solaredge"
+    },
+    {
+      "date": "2026-07-04",
+      "period": "day",
+      "energy_kwh": "0",
+      "source": "solaredge"
+    },
+    {
+      "date": "2026-07-05",
+      "period": "day",
+      "energy_kwh": "19.424",
+      "source": "solaredge"
+    },
+    {
+      "date": "2026-07-06",
+      "period": "day",
+      "energy_kwh": "0",
+      "source": "solaredge"
+    },
+    {
+      "date": "2026-07-07",
+      "period": "day",
+      "energy_kwh": "3.734",
+      "source": "solaredge"
+    },
+    {
+      "date": "2026-07-08",
+      "period": "day",
+      "energy_kwh": "20.294",
+      "source": "solaredge"
+    },
+    {
+      "date": "2026-07-09",
+      "period": "day",
+      "energy_kwh": "20.669",
+      "source": "solaredge"
+    },
+    {
+      "date": "2026-07-10",
+      "period": "day",
+      "energy_kwh": "0.422",
+      "source": "solaredge"
+    },
+    {
+      "date": "2026-07-11",
+      "period": "day",
+      "energy_kwh": "22.405",
+      "source": "solaredge"
+    },
+    {
+      "date": "2026-07-12",
+      "period": "day",
+      "energy_kwh": "20.674",
+      "source": "solaredge"
+    },
+    {
+      "date": "2026-07-13",
+      "period": "day",
+      "energy_kwh": "16.212",
+      "source": "solaredge"
+    },
+    {
+      "date": "2026-07-14",
+      "period": "day",
+      "energy_kwh": "22.568",
+      "source": "solaredge"
+    },
+    {
+      "date": "2026-07-15",
+      "period": "day",
+      "energy_kwh": "23.088",
+      "source": "solaredge"
+    },
+    {
+      "date": "2026-07-16",
+      "period": "day",
+      "energy_kwh": "24.447",
+      "source": "solaredge"
+    },
+    {
+      "date": "2026-07-17",
+      "period": "day",
+      "energy_kwh": "18.322",
+      "source": "solaredge"
+    },
+    {
+      "date": "2026-07-18",
+      "period": "day",
+      "energy_kwh": "0",
+      "source": "solaredge"
+    },
+    {
+      "date": "2026-07-19",
+      "period": "day",
+      "energy_kwh": "13.995",
+      "source": "solaredge"
+    },
+    {
+      "date": "2026-07-20",
+      "period": "day",
+      "energy_kwh": "2.838",
+      "source": "solaredge"
+    },
+    {
+      "date": "2026-07-21",
+      "period": "day",
+      "energy_kwh": "23.923",
+      "source": "solaredge"
+    },
+    {
+      "date": "2026-07-22",
+      "period": "day",
+      "energy_kwh": "0",
+      "source": "solaredge"
+    },
+    {
+      "date": "2026-07-23",
+      "period": "day",
+      "energy_kwh": "23.026",
+      "source": "solaredge"
+    },
+    {
       "date": "2026-07-25",
       "period": "day",
       "energy_kwh": "0.0",
       "source": "solaredge"
     }
   ],
-  "count": 104,
+  "count": 134,
   "monthly": {
     "2018": {
       "01": 255.408,
@@ -745,11 +925,35 @@
       "03": 576.393,
       "04": 555.684,
       "05": 663.665,
-      "06": 638.533,
-      "07": 334.704
+      "06": 763.0670000000001,
+      "07": 669.4079999999998
     }
   },
   "week": [
+    {
+      "date": "2026-07-18",
+      "energy_kwh": 0.0
+    },
+    {
+      "date": "2026-07-19",
+      "energy_kwh": 13.995
+    },
+    {
+      "date": "2026-07-20",
+      "energy_kwh": 2.838
+    },
+    {
+      "date": "2026-07-21",
+      "energy_kwh": 23.923
+    },
+    {
+      "date": "2026-07-22",
+      "energy_kwh": 0.0
+    },
+    {
+      "date": "2026-07-23",
+      "energy_kwh": 23.026
+    },
     {
       "date": "2026-07-25",
       "energy_kwh": 0.0
@@ -764,7 +968,7 @@
     "2023": 5853.064,
     "2024": 5882.4439999999995,
     "2025": 5704.335,
-    "2026": 3328.5420000000004
+    "2026": 3787.7800000000007
   },
   "specific_yield": {
     "2018": 1527.2,
@@ -775,7 +979,7 @@
     "2023": 1474.3,
     "2024": 1481.7,
     "2025": 1436.9,
-    "2026": 838.4
+    "2026": 954.1
   },
   "anomalies": [
     {
