@@ -9,32 +9,49 @@
 <style>
 body {
     font-family: Arial, sans-serif;
-    margin: 30px;
+    margin: 16px;
     background: #f7f7f7;
 }
 
 h1 {
-    margin-bottom: 5px;
+    margin: 0 0 12px;
+    font-size: 1.2rem;
+}
+
+h2 {
+    margin: 0 0 8px;
+    font-size: 0.9rem;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.full {
+    grid-column: 1 / -1;
 }
 
 .card {
     background: white;
-    padding: 20px;
-    margin: 20px 0;
+    padding: 12px;
     border-radius: 8px;
 }
 
 canvas {
     max-width: 100%;
+    max-height: 200px;
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
+    font-size: 0.8rem;
 }
 
 th, td {
-    padding: 8px;
+    padding: 4px 6px;
     border-bottom: 1px solid #ddd;
     text-align: right;
 }
@@ -56,6 +73,7 @@ td:first-child {
 
 .alert {
     color: red;
+    font-size: 0.85rem;
 }
 </style>
 </head>
@@ -64,61 +82,63 @@ td:first-child {
 
 <h1>SolarEdge Production Monitor</h1>
 
-<div class="card">
-    <div id="summary"></div>
-</div>
+<div class="grid">
 
-<div class="card">
-    <h2>Last 7 Days</h2>
-    <canvas id="weekChart"></canvas>
-    <p id="weekEmpty" style="display:none; color:#666;">No daily data yet.</p>
-</div>
+    <div class="card full">
+        <div id="summary"></div>
+    </div>
 
-<div class="card">
-    <h2>Year-over-Year Monthly Production</h2>
-    <canvas id="yearChart"></canvas>
-</div>
+    <div class="card">
+        <h2>Last 7 Days</h2>
+        <canvas id="weekChart"></canvas>
+        <p id="weekEmpty" style="display:none; color:#666;">No daily data yet.</p>
+    </div>
 
-<div class="card">
-    <h2>Average Monthly Production</h2>
-    <canvas id="monthlyAverageChart"></canvas>
-</div>
+    <div class="card">
+        <h2>Year-over-Year Monthly Production</h2>
+        <canvas id="yearChart"></canvas>
+    </div>
 
-<div class="card">
-    <h2>Current Year vs Expected</h2>
+    <div class="card">
+        <h2>Average Monthly Production</h2>
+        <canvas id="monthlyAverageChart"></canvas>
+    </div>
 
-    <table id="currentYearTable">
-        <thead>
-            <tr>
-                <th>Month</th>
-                <th>Actual kWh</th>
-                <th>Average kWh</th>
-                <th>Performance</th>
-            </tr>
-        </thead>
-        <tbody></tbody>
-    </table>
-</div>
+    <div class="card">
+        <h2>Current Year vs Expected</h2>
+        <table id="currentYearTable">
+            <thead>
+                <tr>
+                    <th>Month</th>
+                    <th>Actual kWh</th>
+                    <th>Average kWh</th>
+                    <th>Performance</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
 
-<div class="card">
-    <h2>Annual Performance</h2>
+    <div class="card">
+        <h2>Annual Performance</h2>
+        <table id="annualTable">
+            <thead>
+                <tr>
+                    <th>Year</th>
+                    <th>kWh</th>
+                    <th>kWh/kWp</th>
+                    <th>vs Average</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
 
-    <table id="annualTable">
-        <thead>
-            <tr>
-                <th>Year</th>
-                <th>kWh</th>
-                <th>kWh/kWp</th>
-                <th>vs Average</th>
-            </tr>
-        </thead>
-        <tbody></tbody>
-    </table>
-</div>
+    <div class="card">
+        <h2>Alerts</h2>
+        <div id="alerts"></div>
+    </div>
 
-<div class="card">
-    <h2>Alerts</h2>
-    <div id="alerts"></div>
 </div>
 
 
