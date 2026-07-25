@@ -1,6 +1,6 @@
 from app.solaredge import SolarEdgeClient
 from app.storage import ProductionStore
-from datetime import date
+from datetime import date, timedelta
 import json
 
 
@@ -8,7 +8,8 @@ def main():
     client = SolarEdgeClient()
     store = ProductionStore()
 
-    today = date.today().isoformat()
+    # Job runs at 1:15 AM PT; capture the previous completed day.
+    today = (date.today() - timedelta(days=1)).isoformat()
 
     result = client.daily_energy(today)
 
