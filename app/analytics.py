@@ -64,7 +64,9 @@ class Analytics:
         Compare current year monthly production
         against historical monthly averages.
         """
-        current_year = str(date.today().year)
+        today = date.today()
+        current_year = str(today.year)
+        current_month_key = today.strftime("%Y-%m")
 
         averages = self.monthly_average()
         records = self._monthly_records()
@@ -73,6 +75,9 @@ class Analytics:
 
         for key, value in records.items():
             if not key.startswith(current_year):
+                continue
+
+            if key == current_month_key:
                 continue
 
             month = key[5:7]
