@@ -336,7 +336,8 @@ function renderWeekChart(week) {
 function renderYearChart(data) {
 
     const years = Object.keys(data.monthly)
-        .sort();
+        .sort()
+        .slice(-CATEGORICAL_COLORS.length);
 
     const datasets = years.map((year, i) => {
 
@@ -350,17 +351,12 @@ function renderYearChart(data) {
             );
         }
 
-        // Cycle the fixed hue order; once it repeats, dash the
-        // line so reused hues stay distinguishable at a glance.
-        const color = CATEGORICAL_COLORS[i % CATEGORICAL_COLORS.length];
-
         return {
             label: year,
             data: values,
             tension: 0.2,
-            borderColor: color,
-            backgroundColor: color,
-            borderDash: i >= CATEGORICAL_COLORS.length ? [6, 4] : []
+            borderColor: CATEGORICAL_COLORS[i],
+            backgroundColor: CATEGORICAL_COLORS[i],
         };
 
     });
