@@ -1,5 +1,6 @@
 import csv
 from collections import defaultdict
+from datetime import date
 
 
 class AnomalyDetector:
@@ -9,6 +10,7 @@ class AnomalyDetector:
 
     def monthly_anomalies(self):
         months = defaultdict(list)
+        current_month = date.today().strftime("%Y-%m")
 
         with open(self.path) as f:
             for row in csv.DictReader(f):
@@ -17,6 +19,10 @@ class AnomalyDetector:
                     period = "month" if row.get("source") == "legacy" else "day"
 
                 if period != "month":
+                    continue
+
+                # Skip the current in-progress month
+                if row["date"][:7] == current_month:
                     continue
 
                 energy = float(row["energy_kwh"])
