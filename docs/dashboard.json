@@ -959,6 +959,12 @@
       "energy_kwh": 0.0
     }
   ],
+  "summary": {
+    "this_month_kwh": 669.4,
+    "this_year_kwh": 3787.8,
+    "lifetime_kwh": 50740.9,
+    "last_date": "2026-07-25"
+  },
   "annual": {
     "2018": 6063.079,
     "2019": 5705.465,

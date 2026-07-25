@@ -1,6 +1,7 @@
 import csv
 import json
 from collections import defaultdict
+from datetime import date
 from pathlib import Path
 
 from app.performance import Performance
@@ -46,11 +47,30 @@ def build_dashboard(
         for row in daily[-7:]
     ]
 
+    today = date.today()
+    current_year = str(today.year)
+    current_month = today.strftime("%m")
+
+    this_month_kwh = monthly.get(current_year, {}).get(current_month, 0)
+    this_year_kwh = sum(monthly.get(current_year, {}).values())
+    lifetime_kwh = sum(v for year in monthly.values() for v in year.values())
+
+    last_date = max(
+        (r["date"] for r in records),
+        default=None,
+    )
+
     data = {
         "records": records,
         "count": len(records),
         "monthly": dict(monthly),
         "week": week,
+        "summary": {
+            "this_month_kwh": round(this_month_kwh, 1),
+            "this_year_kwh": round(this_year_kwh, 1),
+            "lifetime_kwh": round(lifetime_kwh, 1),
+            "last_date": last_date,
+        },
         "annual": Performance().annual(),
         "specific_yield": Performance().annual_specific_yield(),
         "anomalies": AnomalyDetector().monthly_anomalies(),

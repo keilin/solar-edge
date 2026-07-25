@@ -75,6 +75,68 @@ td:first-child {
     color: red;
     font-size: 0.85rem;
 }
+
+.summary-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 12px;
+}
+
+.summary-header h2 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #111;
+}
+
+.summary-updated {
+    font-size: 0.8rem;
+    color: #999;
+}
+
+.summary-tiles {
+    display: flex;
+}
+
+.summary-tile {
+    flex: 1;
+    text-align: center;
+    padding: 0 16px;
+    border-right: 1px solid #ddd;
+}
+
+.summary-tile:first-child {
+    padding-left: 0;
+}
+
+.summary-tile:last-child {
+    border-right: none;
+    padding-right: 0;
+}
+
+.tile-label {
+    font-size: 0.78rem;
+    color: #999;
+    margin-bottom: 4px;
+}
+
+.tile-value {
+    font-size: 1.6rem;
+    font-weight: bold;
+    line-height: 1.1;
+}
+
+.tile-value .unit {
+    font-size: 0.9rem;
+    font-weight: normal;
+}
+
+.tile-dollars {
+    font-size: 0.82rem;
+    color: #999;
+    margin-top: 2px;
+}
 </style>
 </head>
 
@@ -85,7 +147,15 @@ td:first-child {
 <div class="grid">
 
     <div class="card full">
-        <div id="summary"></div>
+        <div class="summary-header">
+            <h2>Energy Produced</h2>
+            <span class="summary-updated" id="summaryUpdated"></span>
+        </div>
+        <div class="summary-tiles">
+            <div class="summary-tile" id="tileMonth"></div>
+            <div class="summary-tile" id="tileYear"></div>
+            <div class="summary-tile" id="tileLifetime"></div>
+        </div>
     </div>
 
     <div class="card">
@@ -174,17 +244,60 @@ const monthNames = [
 ];
 
 
+// Update to your utility rate ($/kWh)
+const RATE_PER_KWH = 0.30;
+
 fetch("dashboard.json")
 .then(response => response.json())
 .then(data => {
 
-    renderSummary(data);
+    renderSummary(data.summary);
     renderWeekChart(data.week);
     renderYearChart(data);
     renderAnalytics(data.analytics);
     renderAlerts(data.anomalies);
 
 });
+
+
+function kwh(val) {
+    if (val >= 1000) {
+        return `${(val / 1000).toFixed(2)} <span class="unit">MWh</span>`;
+    }
+    return `${Math.round(val)} <span class="unit">kWh</span>`;
+}
+
+function usd(val) {
+    return (val * RATE_PER_KWH).toLocaleString("en-US", {
+        style: "currency",
+        currency: "USD",
+    });
+}
+
+function renderSummary(s) {
+    if (!s) return;
+
+    document.getElementById("tileMonth").innerHTML = `
+        <div class="tile-label">This Month</div>
+        <div class="tile-value">${kwh(s.this_month_kwh)}</div>
+        <div class="tile-dollars">${usd(s.this_month_kwh)}</div>
+    `;
+    document.getElementById("tileYear").innerHTML = `
+        <div class="tile-label">This Year</div>
+        <div class="tile-value">${kwh(s.this_year_kwh)}</div>
+        <div class="tile-dollars">${usd(s.this_year_kwh)}</div>
+    `;
+    document.getElementById("tileLifetime").innerHTML = `
+        <div class="tile-label">Lifetime</div>
+        <div class="tile-value">${kwh(s.lifetime_kwh)}</div>
+        <div class="tile-dollars">${usd(s.lifetime_kwh)}</div>
+    `;
+
+    if (s.last_date) {
+        document.getElementById("summaryUpdated").textContent =
+            `Updated ${s.last_date}`;
+    }
+}
 
 
 function renderWeekChart(week) {
@@ -217,15 +330,6 @@ function renderWeekChart(week) {
             }
         }
     );
-}
-
-
-function renderSummary(data) {
-
-    document.getElementById("summary").innerHTML = `
-        <b>Records collected:</b> ${data.count}<br>
-        <b>Years:</b> ${Object.keys(data.annual).join(", ")}
-    `;
 }
 
 
