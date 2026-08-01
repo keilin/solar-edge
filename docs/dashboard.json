@@ -839,9 +839,15 @@
       "period": "day",
       "energy_kwh": "19.721",
       "source": "solaredge"
+    },
+    {
+      "date": "2026-07-31",
+      "period": "day",
+      "energy_kwh": "21.66",
+      "source": "solaredge"
     }
   ],
-  "count": 140,
+  "count": 141,
   "monthly": {
     "2018": {
       "01": 255.408,
@@ -962,14 +968,10 @@
       "04": 555.684,
       "05": 663.665,
       "06": 763.0670000000001,
-      "07": 808.5279999999999
+      "07": 830.1879999999999
     }
   },
   "week": [
-    {
-      "date": "2026-07-24",
-      "energy_kwh": 22.552
-    },
     {
       "date": "2026-07-25",
       "energy_kwh": 22.455
@@ -993,13 +995,17 @@
     {
       "date": "2026-07-30",
       "energy_kwh": 19.721
+    },
+    {
+      "date": "2026-07-31",
+      "energy_kwh": 21.66
     }
   ],
   "summary": {
-    "this_month_kwh": 808.5,
-    "this_year_kwh": 3926.9,
-    "lifetime_kwh": 50880.0,
-    "last_date": "2026-07-30"
+    "this_month_kwh": 0,
+    "this_year_kwh": 3948.6,
+    "lifetime_kwh": 50901.7,
+    "last_date": "2026-07-31"
   },
   "annual": {
     "2018": 6063.079,
@@ -1010,7 +1016,7 @@
     "2023": 5853.064,
     "2024": 5882.4439999999995,
     "2025": 5704.335,
-    "2026": 3926.9000000000005
+    "2026": 3948.5600000000004
   },
   "specific_yield": {
     "2018": 1527.2,
@@ -1021,9 +1027,15 @@
     "2023": 1474.3,
     "2024": 1481.7,
     "2025": 1436.9,
-    "2026": 989.1
+    "2026": 994.6
   },
-  "anomalies": [],
+  "anomalies": [
+    {
+      "month": "07",
+      "actual": 334.704,
+      "average": 683.7
+    }
+  ],
   "analytics": {
     "monthly_average": {
       "01": 256.4,
@@ -1075,6 +1087,12 @@
         "average": 696.3,
         "deviation_pct": -8.3,
         "percent_of_expected": 91.7
+      },
+      "07": {
+        "actual": 334.7,
+        "average": 645.0,
+        "deviation_pct": -48.1,
+        "percent_of_expected": 51.9
       }
     },
     "annual_summary": {
