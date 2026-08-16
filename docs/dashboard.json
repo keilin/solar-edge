@@ -929,9 +929,15 @@
       "period": "day",
       "energy_kwh": "8.394",
       "source": "solaredge"
+    },
+    {
+      "date": "2026-08-15",
+      "period": "day",
+      "energy_kwh": "0.0",
+      "source": "solaredge"
     }
   ],
-  "count": 155,
+  "count": 156,
   "monthly": {
     "2018": {
       "01": 255.408,
@@ -1057,10 +1063,6 @@
   },
   "week": [
     {
-      "date": "2026-08-08",
-      "energy_kwh": 8.815
-    },
-    {
       "date": "2026-08-09",
       "energy_kwh": 17.887
     },
@@ -1083,13 +1085,17 @@
     {
       "date": "2026-08-14",
       "energy_kwh": 8.394
+    },
+    {
+      "date": "2026-08-15",
+      "energy_kwh": 0.0
     }
   ],
   "summary": {
     "this_month_kwh": 0,
     "this_year_kwh": 3328.5,
     "lifetime_kwh": 50281.6,
-    "last_date": "2026-08-14"
+    "last_date": "2026-08-15"
   },
   "annual": {
     "2018": 6063.079,
