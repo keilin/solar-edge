@@ -3,6 +3,8 @@ import tempfile
 import unittest
 from unittest.mock import Mock, patch
 
+import requests
+
 from app.solaredge import SolarEdgeClient, TOKEN_URL, BASE_URL
 
 
@@ -25,7 +27,7 @@ class SolarEdgeClientTests(unittest.TestCase):
         response.raise_for_status.return_value = None
         return response
 
-    def test_refresh_uses_basic_auth_and_rotates_refresh_token(self):
+    def test_refresh_uses_basic_auth_form_data_and_rotates_refresh_token(self):
         with tempfile.NamedTemporaryFile() as token_file:
             os.environ["SOLAREDGE_REFRESH_TOKEN_FILE"] = token_file.name
             self.addCleanup(os.environ.pop, "SOLAREDGE_REFRESH_TOKEN_FILE", None)
@@ -40,15 +42,26 @@ class SolarEdgeClientTests(unittest.TestCase):
             self.session.post.assert_called_once_with(
                 TOKEN_URL,
                 auth=("client-id", "client-secret"),
-                json={
+                data={
                     "grant_type": "refresh_token",
                     "refresh_token": "refresh-old",
                 },
+                headers={"Accept": "application/json"},
                 timeout=30,
             )
             self.assertEqual(self.client.access_token, "access-new")
             self.assertEqual(self.client.refresh_token, "refresh-new")
             self.assertEqual(open(token_file.name).read(), "refresh-new")
+
+    def test_token_refresh_error_includes_solar_edge_response_body(self):
+        response = Mock()
+        response.status_code = 400
+        response.text = '{"error":"invalid_grant"}'
+        response.raise_for_status.side_effect = requests.HTTPError("400 Client Error")
+        self.session.post.return_value = response
+
+        with self.assertRaisesRegex(RuntimeError, "invalid_grant"):
+            self.client._refresh_access_token()
 
     def test_energy_uses_v2_path_bearer_token_and_preserves_response(self):
         self.client.access_token = "access-token"
