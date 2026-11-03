@@ -31,7 +31,7 @@ class SolarEdgeClient:
         response = self.session.post(
             TOKEN_URL,
             auth=(self.client_id, self.client_secret),
-            data={
+            json={
                 "grant_type": "refresh_token",
                 "refresh_token": self.refresh_token,
             },
