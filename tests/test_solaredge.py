@@ -40,7 +40,7 @@ class SolarEdgeClientTests(unittest.TestCase):
             self.session.post.assert_called_once_with(
                 TOKEN_URL,
                 auth=("client-id", "client-secret"),
-                data={
+                json={
                     "grant_type": "refresh_token",
                     "refresh_token": "refresh-old",
                 },
