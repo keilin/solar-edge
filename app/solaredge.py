@@ -28,18 +28,30 @@ class SolarEdgeClient:
         self.refresh_token = refresh_token
 
     def _refresh_access_token(self):
+        # SolarEdge's OAuth endpoint expects application/x-www-form-urlencoded,
+        # not a JSON request body.
         response = self.session.post(
             TOKEN_URL,
             auth=(self.client_id, self.client_secret),
-            json={
+            data={
                 "grant_type": "refresh_token",
                 "refresh_token": self.refresh_token,
             },
+            headers={"Accept": "application/json"},
             timeout=30,
         )
-        response.raise_for_status()
-        payload = response.json()
+        try:
+            response.raise_for_status()
+        except requests.HTTPError as exc:
+            # Include SolarEdge's error payload in the Actions log; it is
+            # needed to distinguish invalid_client from invalid_grant, etc.
+            detail = getattr(response, "text", "")
+            raise RuntimeError(
+                f"SolarEdge OAuth token refresh failed (HTTP "
+                f"{response.status_code}): {detail}"
+            ) from exc
 
+        payload = response.json()
         access_token = payload.get("access_token")
         if not access_token:
             raise RuntimeError("SolarEdge OAuth response did not contain access_token")
