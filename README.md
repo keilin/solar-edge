@@ -1,5 +1,7 @@
 # SolarEdge Monitor
 
+**Published dashboard:** https://keilin.github.io/solar-edge/
+
 Automated SolarEdge production tracking using GitHub Actions and the SolarEdge Monitoring API V2 (OAuth 2.0, Site Access).
 
 The workflow runs daily, reads the previous day's production, updates `data/production.csv`, rebuilds `docs/dashboard.json`, and commits the updated data. SolarEdge rotates the refresh token during use; the workflow saves each replacement back to the GitHub repository secret.
