@@ -21,10 +21,17 @@ jobs:
       - run: pip install -r requirements.txt
 
       - name: Capture production
-        run: python -m app.main
+        run: |
+          python -m app.main
+          gh secret set SOLAREDGE_REFRESH_TOKEN --body "$(cat /tmp/solaredge_refresh_token)"
         env:
           SOLAREDGE_SITE_ID: ${{ secrets.SOLAREDGE_SITE_ID }}
-          SOLAREDGE_API_KEY: ${{ secrets.SOLAREDGE_API_KEY }}
+          SOLAREDGE_CLIENT_ID: ${{ secrets.SOLAREDGE_CLIENT_ID }}
+          SOLAREDGE_CLIENT_SECRET: ${{ secrets.SOLAREDGE_CLIENT_SECRET }}
+          SOLAREDGE_REFRESH_TOKEN: ${{ secrets.SOLAREDGE_REFRESH_TOKEN }}
+          SOLAREDGE_REFRESH_TOKEN_FILE: /tmp/solaredge_refresh_token
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+          GH_REPO: ${{ github.repository }}
 
       - name: Build dashboard
         run: python -m app.dashboard
