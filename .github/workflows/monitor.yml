@@ -20,9 +20,16 @@ jobs:
 
       - run: pip install -r requirements.txt
 
+      - name: Test SolarEdge client
+        run: python -m unittest discover -s tests -v
+
       - name: Capture production
         run: |
           python -m app.main
+          test -s /tmp/solaredge_refresh_token || {
+            echo "SolarEdge did not return a rotated refresh token; refusing to continue."
+            exit 1
+          }
           gh secret set SOLAREDGE_REFRESH_TOKEN --body "$(cat /tmp/solaredge_refresh_token)"
         env:
           SOLAREDGE_SITE_ID: ${{ secrets.SOLAREDGE_SITE_ID }}
