@@ -25,6 +25,11 @@ jobs:
 
       - name: Capture production
         run: |
+          test -n "$GH_TOKEN" || {
+            echo "GH_PAT is required to save SolarEdge's rotated refresh token."
+            exit 1
+          }
+          gh api "repos/$GH_REPO/actions/secrets/public-key" >/dev/null
           python -m app.main
           test -s /tmp/solaredge_refresh_token || {
             echo "SolarEdge did not return a rotated refresh token; refusing to continue."
