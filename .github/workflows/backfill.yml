@@ -27,15 +27,11 @@ jobs:
           gh api "repos/$GH_REPO/actions/secrets/public-key" >/dev/null
           save_rotated_token() {
             if test -s /tmp/solaredge_refresh_token; then
-                fi
+              gh secret set SOLAREDGE_REFRESH_TOKEN --body "$(cat /tmp/solaredge_refresh_token)"
+            fi
           }
           trap save_rotated_token EXIT
           python -m app.backfill_daily
-          test -s /tmp/solaredge_refresh_token || {
-            echo "SolarEdge did not return a rotated refresh token; refusing to continue."
-            exit 1
-          }
-          gh secret set SOLAREDGE_REFRESH_TOKEN --body "$(cat /tmp/solaredge_refresh_token)"
         env:
           SOLAREDGE_SITE_ID: ${{ secrets.SOLAREDGE_SITE_ID }}
           SOLAREDGE_CLIENT_ID: ${{ secrets.SOLAREDGE_CLIENT_ID }}
