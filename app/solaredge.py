@@ -75,7 +75,7 @@ class SolarEdgeClient:
         # SolarEdge applies a burst rate limit. Backfills make many sequential
         # requests, so honor Retry-After when supplied and otherwise use
         # exponential backoff. Do not refresh OAuth credentials on a 429.
-        for attempt in range(9):
+        for attempt in range(6):
             response = self.session.get(
                 url,
                 params=params or {},
@@ -83,10 +83,10 @@ class SolarEdgeClient:
                 timeout=30,
             )
             if response.status_code == 429:
-                if attempt == 8:
+                if attempt == 5:
                     detail = getattr(response, "text", "")
                     raise RuntimeError(
-                        f"SolarEdge API rate limit persisted after 9 attempts "
+                        f"SolarEdge API rate limit persisted after 6 attempts "
                         f"for {endpoint}: {detail}"
                     )
                 retry_after = getattr(response, "headers", {}).get("Retry-After")
@@ -96,7 +96,7 @@ class SolarEdgeClient:
                     delay = min(60 * (2 ** attempt), 900)
                 print(
                     f"SolarEdge rate limit (HTTP 429) for {endpoint}; "
-                    f"retrying in {delay} seconds (attempt {attempt + 2}/9).",
+                    f"retrying in {delay} seconds (attempt {attempt + 2}/6).",
                     flush=True,
                 )
                 time.sleep(delay)
