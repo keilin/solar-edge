@@ -71,21 +71,45 @@ class SolarEdgeClient:
         if not self.access_token or time.time() >= self.access_token_expires_at:
             self._refresh_access_token()
 
-        response = self.session.get(
-            f"{BASE_URL}/sites/{self.site_id}/{endpoint}",
-            params=params or {},
-            headers={"Authorization": f"Bearer {self.access_token}"},
-            timeout=30,
-        )
-        try:
-            response.raise_for_status()
-        except requests.HTTPError as exc:
-            detail = getattr(response, "text", "")
-            raise RuntimeError(
-                f"SolarEdge API request failed (HTTP {response.status_code}) "
-                f"for {endpoint}: {detail}"
-            ) from exc
-        return response.json()
+        url = f"{BASE_URL}/sites/{self.site_id}/{endpoint}"
+        # SolarEdge applies a burst rate limit. Backfills make many sequential
+        # requests, so honor Retry-After when supplied and otherwise use
+        # exponential backoff. Do not refresh OAuth credentials on a 429.
+        for attempt in range(9):
+            response = self.session.get(
+                url,
+                params=params or {},
+                headers={"Authorization": f"Bearer {self.access_token}"},
+                timeout=30,
+            )
+            if response.status_code == 429:
+                if attempt == 8:
+                    detail = getattr(response, "text", "")
+                    raise RuntimeError(
+                        f"SolarEdge API rate limit persisted after 9 attempts "
+                        f"for {endpoint}: {detail}"
+                    )
+                retry_after = getattr(response, "headers", {}).get("Retry-After")
+                try:
+                    delay = max(1, int(float(retry_after))) if retry_after else min(60 * (2 ** attempt), 900)
+                except (TypeError, ValueError):
+                    delay = min(60 * (2 ** attempt), 900)
+                print(
+                    f"SolarEdge rate limit (HTTP 429) for {endpoint}; "
+                    f"retrying in {delay} seconds (attempt {attempt + 2}/9).",
+                    flush=True,
+                )
+                time.sleep(delay)
+                continue
+            try:
+                response.raise_for_status()
+            except requests.HTTPError as exc:
+                detail = getattr(response, "text", "")
+                raise RuntimeError(
+                    f"SolarEdge API request failed (HTTP {response.status_code}) "
+                    f"for {endpoint}: {detail}"
+                ) from exc
+            return response.json()
 
     @staticmethod
     def _unwrap_energy(payload):
