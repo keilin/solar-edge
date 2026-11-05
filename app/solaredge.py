@@ -1,11 +1,14 @@
 import os
 import time
+from datetime import date, datetime, time as datetime_time
+from zoneinfo import ZoneInfo
 from pathlib import Path
 
 import requests
 
 BASE_URL = "https://monitoringapi.solaredge.com/v2"
 TOKEN_URL = f"{BASE_URL}/oauth2/token"
+SITE_TIMEZONE = ZoneInfo("America/Los_Angeles")
 
 
 class SolarEdgeClient:
@@ -83,12 +86,23 @@ class SolarEdgeClient:
         return payload.get("energy", payload) if isinstance(payload, dict) else payload
 
     def energy(self, start_date, end_date, unit="DAY"):
+        # V2 requires offset-aware local timestamps in "from" and "to".
+        # Date-only V1 parameters are silently ignored by the V2 endpoint.
+        start = datetime.combine(
+            date.fromisoformat(start_date), datetime_time.min, SITE_TIMEZONE
+        )
+        end = datetime.combine(
+            date.fromisoformat(end_date),
+            datetime_time(23, 59, 59),
+            SITE_TIMEZONE,
+        )
         payload = self._get(
             "energy",
             {
-                "timeUnit": unit,
-                "startDate": start_date,
-                "endDate": end_date,
+                "resolution": unit,
+                "unit": "WH",
+                "from": start.isoformat(timespec="seconds"),
+                "to": end.isoformat(timespec="seconds"),
             },
         )
         return self._unwrap_energy(payload)
