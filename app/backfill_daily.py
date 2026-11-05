@@ -54,13 +54,14 @@ def main():
             if not isinstance(item, dict):
                 continue
 
-            raw_date = item.get("date")
+            # SolarEdge V2 returns ISO-8601 timestamps, not a "date" field.
+            raw_date = item.get("timestamp") or item.get("date")
             value = item.get("value")
             if value is None:
                 null_in_chunk += 1
                 continue
             if not raw_date:
-                raise RuntimeError(f"SolarEdge returned a numeric value without a date: {item!r}")
+                raise RuntimeError(f"SolarEdge returned a numeric value without a date or timestamp: {item!r}")
 
             day = str(raw_date)[:10]
             energy_kwh = _value_to_kwh(value, unit)
