@@ -1,0 +1,52 @@
+name: SolarEdge Daily History Backfill
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+
+      - run: pip install -r requirements.txt
+
+      - name: Backfill daily production history
+        run: |
+          test -n "$GH_TOKEN" || {
+            echo "GH_PAT is required to save SolarEdge's rotated refresh token."
+            exit 1
+          }
+          gh api "repos/$GH_REPO/actions/secrets/public-key" >/dev/null
+          python -m app.backfill_daily
+          test -s /tmp/solaredge_refresh_token || {
+            echo "SolarEdge did not return a rotated refresh token; refusing to continue."
+            exit 1
+          }
+          gh secret set SOLAREDGE_REFRESH_TOKEN --body "$(cat /tmp/solaredge_refresh_token)"
+        env:
+          SOLAREDGE_SITE_ID: ${{ secrets.SOLAREDGE_SITE_ID }}
+          SOLAREDGE_CLIENT_ID: ${{ secrets.SOLAREDGE_CLIENT_ID }}
+          SOLAREDGE_CLIENT_SECRET: ${{ secrets.SOLAREDGE_CLIENT_SECRET }}
+          SOLAREDGE_REFRESH_TOKEN: ${{ secrets.SOLAREDGE_REFRESH_TOKEN }}
+          SOLAREDGE_REFRESH_TOKEN_FILE: /tmp/solaredge_refresh_token
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+          GH_REPO: ${{ github.repository }}
+
+      - name: Rebuild dashboard
+        run: python -m app.dashboard
+
+      - name: Commit backfilled data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/ docs
+          git commit -m "Backfill SolarEdge daily production history" || exit 0
+          git push
