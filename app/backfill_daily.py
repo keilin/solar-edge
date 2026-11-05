@@ -44,7 +44,13 @@ def main():
     numeric_values = 0
 
     while cursor <= end_date:
-        chunk_end = min(date(cursor.year, 12, 31), end_date)
+        # Keep requests to one calendar month. The V2 API has been verified
+        # with month-long ranges; larger historical ranges returned HTTP 400.
+        if cursor.month == 12:
+            next_month = date(cursor.year + 1, 1, 1)
+        else:
+            next_month = date(cursor.year, cursor.month + 1, 1)
+        chunk_end = min(next_month - timedelta(days=1), end_date)
         result = client.energy(cursor.isoformat(), chunk_end.isoformat(), "DAY")
         values, unit = _energy_values(result)
 
