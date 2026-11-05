@@ -25,6 +25,11 @@ jobs:
             exit 1
           }
           gh api "repos/$GH_REPO/actions/secrets/public-key" >/dev/null
+          save_rotated_token() {
+            if test -s /tmp/solaredge_refresh_token; then
+                fi
+          }
+          trap save_rotated_token EXIT
           python -m app.backfill_daily
           test -s /tmp/solaredge_refresh_token || {
             echo "SolarEdge did not return a rotated refresh token; refusing to continue."
