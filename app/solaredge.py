@@ -77,7 +77,14 @@ class SolarEdgeClient:
             headers={"Authorization": f"Bearer {self.access_token}"},
             timeout=30,
         )
-        response.raise_for_status()
+        try:
+            response.raise_for_status()
+        except requests.HTTPError as exc:
+            detail = getattr(response, "text", "")
+            raise RuntimeError(
+                f"SolarEdge API request failed (HTTP {response.status_code}) "
+                f"for {endpoint}: {detail}"
+            ) from exc
         return response.json()
 
     @staticmethod
