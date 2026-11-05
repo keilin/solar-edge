@@ -67,7 +67,8 @@ class SolarEdgeClientTests(unittest.TestCase):
         self.client.access_token = "access-token"
         self.client.access_token_expires_at = 9999999999
         self.session.get.return_value = self.response({
-            "timeUnit": "DAY",
+            "resolution": "DAY",
+                "unit": "WH",
             "unit": "Wh",
             "values": [{"date": "2026-11-02 00:00:00", "value": 1234}],
         })
@@ -78,8 +79,8 @@ class SolarEdgeClientTests(unittest.TestCase):
             f"{BASE_URL}/sites/12345/energy",
             params={
                 "timeUnit": "DAY",
-                "startDate": "2026-11-02",
-                "endDate": "2026-11-02",
+                "from": "2026-11-02T00:00:00-08:00",
+                "to": "2026-11-02T23:59:59-08:00",
             },
             headers={"Authorization": "Bearer access-token"},
             timeout=30,
