@@ -1,0 +1,42 @@
+name: Diagnose SolarEdge Energy Date Ranges
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+
+      - run: pip install -r requirements.txt
+
+      - name: Compare two separated date ranges
+        run: |
+          test -n "$GH_TOKEN" || {
+            echo "GH_PAT is required to save SolarEdge's rotated refresh token."
+            exit 1
+          }
+          gh api "repos/$GH_REPO/actions/secrets/public-key" >/dev/null
+          save_rotated_token() {
+            if test -s /tmp/solaredge_refresh_token; then
+              gh secret set SOLAREDGE_REFRESH_TOKEN --body "$(cat /tmp/solaredge_refresh_token)"
+            fi
+          }
+          trap save_rotated_token EXIT
+          python -m app.diagnose_energy_ranges
+        env:
+          SOLAREDGE_SITE_ID: ${{ secrets.SOLAREDGE_SITE_ID }}
+          SOLAREDGE_CLIENT_ID: ${{ secrets.SOLAREDGE_CLIENT_ID }}
+          SOLAREDGE_CLIENT_SECRET: ${{ secrets.SOLAREDGE_CLIENT_SECRET }}
+          SOLAREDGE_REFRESH_TOKEN: ${{ secrets.SOLAREDGE_REFRESH_TOKEN }}
+          SOLAREDGE_REFRESH_TOKEN_FILE: /tmp/solaredge_refresh_token
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+          GH_REPO: ${{ github.repository }}
