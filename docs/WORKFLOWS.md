@@ -15,7 +15,7 @@ This repository uses three GitHub Actions workflows.
 **What it does**
 1. Installs Python dependencies and runs the unit test suite.
 2. Queries SolarEdge for daily production over the latest seven-day window. This revisits recent dates so later SolarEdge readings can replace provisional values.
-3. Refreshes monthly production totals for the three most recently completed calendar months, plus the current month's total.
+3. Refreshes monthly production totals for every completed month in the current calendar year, plus the current month's total.
 4. Rebuilds `docs/dashboard.json` from the production CSV.
 5. Commits changed files under `data/` and `docs/`.
 
@@ -39,9 +39,10 @@ This is a maintenance operation, not a scheduled task. It can make many SolarEdg
 
 **Triggers**
 - Whenever the SolarEdge Monitor workflow completes.
+- On changes under `docs/` or to the Pages workflow itself.
 - Manually through **Actions → Deploy Dashboard → Run workflow**.
 
-On a successful monitor run, it checks out the repository, packages the `docs/` directory, and deploys it to GitHub Pages. A manual run republishes the current `docs/` contents; it does not query SolarEdge or rebuild the dashboard data.
+On a successful monitor run, it checks out the repository, packages the `docs/` directory, and deploys it to GitHub Pages. A push to `docs/` republishes the dashboard directly. A manual run republishes the current `docs/` contents; it does not query SolarEdge or rebuild the dashboard data.
 
 Published site: https://keilin.github.io/solar-edge/
 
