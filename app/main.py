@@ -4,6 +4,41 @@ from datetime import date, timedelta
 import json
 
 
+def _refresh_completed_months(client, store, today):
+    """Refresh the three most recently completed monthly SolarEdge totals."""
+    current_month = date(today.year, today.month, 1)
+    end_day = current_month - timedelta(days=1)
+
+    # Walk back to the first day of the month three months before this one.
+    first_previous_month = date(end_day.year, end_day.month, 1)
+    start_day = first_previous_month
+    for _ in range(2):
+        start_day -= timedelta(days=1)
+        start_day = date(start_day.year, start_day.month, 1)
+
+    result = client.monthly_energy(start_day.isoformat(), end_day.isoformat())
+    values = result.get("values", []) if isinstance(result, dict) else []
+    refreshed = []
+
+    for item in values:
+        if not isinstance(item, dict) or item.get("value") is None:
+            continue
+        raw_date = item.get("timestamp") or item.get("date")
+        if not raw_date:
+            continue
+        month = str(raw_date)[:7]
+        energy_kwh = float(item["value"]) / 1000
+        store.append({
+            "date": month,
+            "period": "month",
+            "energy_kwh": energy_kwh,
+            "source": "solaredge",
+        })
+        refreshed.append({"month": month, "energy_kwh": energy_kwh})
+
+    return refreshed
+
+
 def main():
     client = SolarEdgeClient()
     store = ProductionStore()
@@ -37,6 +72,11 @@ def main():
         )
         captured.append({"date": day, "energy_kwh": energy_kwh})
 
+    # Backfill the three most recent completed months from SolarEdge's
+    # monthly-resolution endpoint. Daily sums are not used because a few
+    # historical daily readings may be absent.
+    completed_months = _refresh_completed_months(client, store, date.today())
+
     month = end_day.strftime("%Y-%m")
     monthly = client.monthly_energy(f"{month}-01", end_day.isoformat())
 
@@ -56,6 +96,7 @@ def main():
 
     print(json.dumps({
         "daily_values": captured,
+        "completed_months": completed_months,
         "monthly_kwh": month_kwh,
     }, indent=2))
 
