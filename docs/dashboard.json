@@ -1395,31 +1395,31 @@
     {
       "date": "2026-11-02",
       "period": "day",
-      "energy_kwh": "0.0",
+      "energy_kwh": "7.408",
       "source": "solaredge"
     },
     {
       "date": "2026-11",
       "period": "month",
-      "energy_kwh": "0.0",
+      "energy_kwh": "57.955",
       "source": "solaredge"
     },
     {
       "date": "2026-11-03",
       "period": "day",
-      "energy_kwh": "0.0",
+      "energy_kwh": "6.429",
       "source": "solaredge"
     },
     {
       "date": "2026-11-04",
       "period": "day",
-      "energy_kwh": "0.0",
+      "energy_kwh": "14.325",
       "source": "solaredge"
     },
     {
       "date": "2026-11-05",
       "period": "day",
-      "energy_kwh": "0.0",
+      "energy_kwh": "14.498",
       "source": "solaredge"
     },
     {
@@ -21783,7 +21783,7 @@
       "05": 663.665,
       "06": 638.533,
       "07": 334.704,
-      "11": 0.0
+      "11": 57.955
     }
   },
   "week": [
@@ -21801,25 +21801,25 @@
     },
     {
       "date": "2026-11-02",
-      "energy_kwh": 0.0
+      "energy_kwh": 7.408
     },
     {
       "date": "2026-11-03",
-      "energy_kwh": 0.0
+      "energy_kwh": 6.429
     },
     {
       "date": "2026-11-04",
-      "energy_kwh": 0.0
+      "energy_kwh": 14.325
     },
     {
       "date": "2026-11-05",
-      "energy_kwh": 0.0
+      "energy_kwh": 14.498
     }
   ],
   "summary": {
-    "this_month_kwh": 0.0,
-    "this_year_kwh": 3328.5,
-    "lifetime_kwh": 50281.6,
+    "this_month_kwh": 58.0,
+    "this_year_kwh": 3386.5,
+    "lifetime_kwh": 50339.6,
     "last_date": "2026-11-05"
   },
   "annual": {
@@ -21831,7 +21831,7 @@
     "2023": 11706.128000000008,
     "2024": 11764.888000000006,
     "2025": 11408.67000000001,
-    "2026": 7939.771000000001,
+    "2026": 8040.386,
     "2017": 5538.555000000003
   },
   "specific_yield": {
@@ -21843,7 +21843,7 @@
     "2023": 2948.6,
     "2024": 2963.4,
     "2025": 2873.7,
-    "2026": 1999.9,
+    "2026": 2025.3,
     "2017": 1395.1
   },
   "anomalies": [
@@ -21865,7 +21865,7 @@
       "08": 619.5,
       "09": 508.1,
       "10": 422.4,
-      "11": 273.7,
+      "11": 280.1,
       "12": 221.0
     },
     "current_year_vs_average": {
