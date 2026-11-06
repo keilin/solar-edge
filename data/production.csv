@@ -3609,3 +3609,6 @@ date,period,energy_kwh,source
 2026-06-23,day,21.73,solaredge
 2026-09-28,day,4.598,solaredge
 2026-10-07,day,0.505,solaredge
+2026-08,month,466.869,solaredge
+2026-09,month,375.562,solaredge
+2026-10,month,273.316,solaredge
