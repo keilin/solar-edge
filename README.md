@@ -97,6 +97,10 @@ The workflow must update the `SOLAREDGE_REFRESH_TOKEN` repository secret after S
 
 The workflow exposes this secret as `GH_TOKEN` to the GitHub CLI. It uses the token to read the repository Actions public key and write the rotated refresh token. If the workflow reports HTTP 403 while updating the secret, check that the PAT has **Secrets: Read and write** and has not expired.
 
+## Dashboard controls
+
+The GitHub Pages dashboard is interactive and runs entirely in the browser using the historical data in `docs/dashboard.json`; changing chart controls does not make additional SolarEdge API requests. The daily production chart supports preset ranges and custom dates. Year-over-year monthly production, monthly averages, year-vs-expected comparisons, and annual performance each have year-range or baseline selectors.
+
 ## GitHub Actions workflows
 
 The repository keeps three workflows under `.github/workflows/`. See the [workflow reference](docs/WORKFLOWS.md) for details:
