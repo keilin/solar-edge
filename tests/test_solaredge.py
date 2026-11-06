@@ -51,7 +51,8 @@ class SolarEdgeClientTests(unittest.TestCase):
             )
             self.assertEqual(self.client.access_token, "access-new")
             self.assertEqual(self.client.refresh_token, "refresh-new")
-            self.assertEqual(open(token_file.name).read(), "refresh-new")
+            with open(token_file.name, encoding="utf-8") as saved_token:
+                self.assertEqual(saved_token.read(), "refresh-new")
 
     def test_token_refresh_error_includes_solar_edge_response_body(self):
         response = Mock()
@@ -66,26 +67,27 @@ class SolarEdgeClientTests(unittest.TestCase):
     def test_energy_uses_v2_path_bearer_token_and_preserves_response(self):
         self.client.access_token = "access-token"
         self.client.access_token_expires_at = 9999999999
-        self.session.get.return_value = self.response({
+        payload = {
             "resolution": "DAY",
-                "unit": "WH",
-            "unit": "Wh",
+            "unit": "WH",
             "values": [{"date": "2026-11-02 00:00:00", "value": 1234}],
-        })
+        }
+        self.session.get.return_value = self.response(payload)
 
         result = self.client.daily_energy("2026-11-02")
 
         self.session.get.assert_called_once_with(
             f"{BASE_URL}/sites/12345/energy",
             params={
-                "timeUnit": "DAY",
+                "resolution": "DAY",
+                "unit": "WH",
                 "from": "2026-11-02T00:00:00-08:00",
                 "to": "2026-11-02T23:59:59-08:00",
             },
             headers={"Authorization": "Bearer access-token"},
             timeout=30,
         )
-        self.assertEqual(result["values"][0]["value"], 1234)
+        self.assertEqual(result, payload)
 
     def test_unwraps_energy_envelope(self):
         self.client.access_token = "access-token"
