@@ -97,14 +97,23 @@ The workflow must update the `SOLAREDGE_REFRESH_TOKEN` repository secret after S
 
 The workflow exposes this secret as `GH_TOKEN` to the GitHub CLI. It uses the token to read the repository Actions public key and write the rotated refresh token. If the workflow reports HTTP 403 while updating the secret, check that the PAT has **Secrets: Read and write** and has not expired.
 
-## Run and verify
+## GitHub Actions workflows
 
-1. Open **Actions → SolarEdge Monitor**.
-2. Select **Run workflow** to test the setup immediately.
-3. Confirm the run passes the client tests, retrieves production data, and completes the refresh-token secret update.
-4. Check that `data/production.csv` and `docs/dashboard.json` are updated by the run.
+The repository keeps three workflows under `.github/workflows/`:
 
-The workflow is also scheduled to run daily. Each successful token refresh may rotate the refresh token; do not restore an older token from a backup after a successful run, or subsequent authentication may fail.
+- **SolarEdge Monitor** (`monitor.yml`) — the primary scheduled workflow. It runs daily at 08:15 UTC, can also be started manually, and runs automatically when application code, tests, or its own workflow definition change. It runs the unit tests, retrieves the latest seven days of daily production, refreshes monthly totals for the three most recently completed months, retrieves the current month's total, rebuilds the dashboard data, and commits changes to `data/` and `docs/`. Rechecking recent dates allows provisional SolarEdge readings to be corrected.
+- **SolarEdge Daily History Backfill** (`backfill.yml`) — a manual, one-time maintenance workflow for retrieving historical daily production from March 2017 through yesterday. Use **Actions → SolarEdge Daily History Backfill → Run workflow** only when the historical daily CSV needs to be rebuilt or extended. It can take several minutes and may encounter SolarEdge API rate limits; do not run it routinely.
+- **Deploy Dashboard** (`pages.yml`) — deploys the `docs/` directory to GitHub Pages after the SolarEdge Monitor workflow completes successfully. It can also be run manually to republish the current contents of `docs/` without querying SolarEdge.
+
+The former date-range diagnostic workflow was removed after the API investigation; it was a troubleshooting tool, not part of routine operation.
+
+### Running and checking the monitor
+
+Open **Actions → SolarEdge Monitor → Run workflow** to run it on demand. Confirm the tests and production capture steps succeed, then check `data/production.csv`, `docs/dashboard.json`, and the [published dashboard](https://keilin.github.io/solar-edge/).
+
+### Refresh-token handling
+
+SolarEdge rotates the refresh token during API use. Both workflows that call the API (`monitor.yml` and `backfill.yml`) save the replacement token to the `SOLAREDGE_REFRESH_TOKEN` repository secret when the job exits. This requires `GH_PAT` with Actions read/write and Secrets read/write access. Do not restore an older refresh token after a successful run; that can invalidate authentication.
 
 ## Local development
 
