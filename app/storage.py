@@ -3,17 +3,24 @@ from pathlib import Path
 
 DATA_FILE = Path("data/production.csv")
 
+FIELDNAMES = [
+    "date",
+    "period",
+    "energy_kwh",
+    "source",
+]
+
 
 class ProductionStore:
     def __init__(self, path=DATA_FILE):
         self.path = Path(path)
-        self.path.parent.mkdir(exist_ok=True)
+        self.path.parent.mkdir(parents=True, exist_ok=True)
 
     def _records(self):
         if not self.path.exists():
             return []
 
-        with self.path.open() as f:
+        with self.path.open(newline="", encoding="utf-8") as f:
             return list(csv.DictReader(f))
 
     def append(self, record):
@@ -25,38 +32,38 @@ class ProductionStore:
             record["source"],
         )
 
-        existing = {
-            (
-                r["date"],
-                r.get("period", ""),
-                r["source"],
+        for existing in records:
+            existing_key = (
+                existing["date"],
+                existing.get("period", ""),
+                existing["source"],
             )
-            for r in records
-        }
+            if existing_key == key:
+                # Historical backfills can contain provisional zeros. Replace
+                # them when a later daily monitor call returns the actual value.
+                try:
+                    unchanged = float(existing["energy_kwh"]) == float(record["energy_kwh"])
+                except (TypeError, ValueError):
+                    unchanged = existing["energy_kwh"] == str(record["energy_kwh"])
 
-        if key in existing:
-            return
+                if unchanged:
+                    return
 
-        exists = self.path.exists()
+                existing["energy_kwh"] = str(record["energy_kwh"])
+                with self.path.open("w", newline="", encoding="utf-8") as f:
+                    writer = csv.DictWriter(f, fieldnames=FIELDNAMES)
+                    writer.writeheader()
+                    writer.writerows(records)
+                return
 
-        with self.path.open("a", newline="") as f:
-            writer = csv.DictWriter(
-                f,
-                fieldnames=[
-                    "date",
-                    "period",
-                    "energy_kwh",
-                    "source",
-                ],
-            )
-
-            if not exists:
-                writer.writeheader()
-
-            writer.writerow(record)
+        records.append({field: str(record[field]) for field in FIELDNAMES})
+        with self.path.open("w", newline="", encoding="utf-8") as f:
+            writer = csv.DictWriter(f, fieldnames=FIELDNAMES)
+            writer.writeheader()
+            writer.writerows(records)
 
     def import_csv(self, source):
-        with open(source) as f:
+        with open(source, newline="", encoding="utf-8") as f:
             for row in csv.DictReader(f):
                 self.append(
                     {
