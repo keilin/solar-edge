@@ -8,37 +8,43 @@ def main():
     client = SolarEdgeClient()
     store = ProductionStore()
 
-    # Job runs at 1:15 AM PT; capture the previous completed day.
-    today = (date.today() - timedelta(days=1)).isoformat()
+    # Capture the previous completed day and refresh the preceding week.
+    # Historical API values can initially be provisional zeros; revisiting
+    # recent dates lets later readings replace those values.
+    end_day = date.today() - timedelta(days=1)
+    start_day = end_day - timedelta(days=6)
+    result = client.energy(start_day.isoformat(), end_day.isoformat(), "DAY")
 
-    result = client.daily_energy(today)
+    daily_values = result.get("values", []) if isinstance(result, dict) else []
+    captured = []
+    for item in daily_values:
+        if not isinstance(item, dict):
+            continue
+        raw_date = item.get("timestamp") or item.get("date")
+        value = item.get("value")
+        if not raw_date or value is None:
+            continue
 
-    energy_kwh = 0
+        day = str(raw_date)[:10]
+        energy_kwh = float(value) / 1000
+        store.append(
+            {
+                "date": day,
+                "period": "day",
+                "energy_kwh": energy_kwh,
+                "source": "solaredge",
+            }
+        )
+        captured.append({"date": day, "energy_kwh": energy_kwh})
 
-    if isinstance(result, dict):
-        values = result.get("values", [])
-        if values:
-            energy_kwh = float(values[0].get("value") or 0) / 1000
+    month = end_day.strftime("%Y-%m")
+    monthly = client.monthly_energy(f"{month}-01", end_day.isoformat())
 
-    store.append(
-        {
-            "date": today,
-            "period": "day",
-            "energy_kwh": energy_kwh,
-            "source": "solaredge",
-        }
-    )
-
-    month = today[:7]
-    monthly = client.monthly_energy(
-        f"{month}-01",
-        today,
-    )
-
+    month_kwh = None
     if isinstance(monthly, dict):
         values = monthly.get("values", [])
-        if values:
-            month_kwh = float(values[0].get("value") or 0) / 1000
+        if values and values[0].get("value") is not None:
+            month_kwh = float(values[0]["value"]) / 1000
             store.append(
                 {
                     "date": month,
@@ -49,8 +55,8 @@ def main():
             )
 
     print(json.dumps({
-        "date": today,
-        "energy_kwh": energy_kwh,
+        "daily_values": captured,
+        "monthly_kwh": month_kwh,
     }, indent=2))
 
 
