@@ -2,566 +2,101 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>SolarEdge Production Monitor</title>
-
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
 <style>
-body {
-    font-family: Arial, sans-serif;
-    margin: 16px;
-    background: #f7f7f7;
-}
-
-h1 {
-    margin: 0 0 12px;
-    font-size: 1.2rem;
-}
-
-h2 {
-    margin: 0 0 8px;
-    font-size: 0.9rem;
-}
-
-.grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-}
-
-.full {
-    grid-column: 1 / -1;
-}
-
-.card {
-    background: white;
-    padding: 12px;
-    border-radius: 8px;
-}
-
-canvas {
-    max-width: 100%;
-    max-height: 200px;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.8rem;
-}
-
-th, td {
-    padding: 4px 6px;
-    border-bottom: 1px solid #ddd;
-    text-align: right;
-}
-
-th:first-child,
-td:first-child {
-    text-align: left;
-}
-
-.positive {
-    color: green;
-    font-weight: bold;
-}
-
-.negative {
-    color: red;
-    font-weight: bold;
-}
-
-.alert {
-    color: red;
-    font-size: 0.85rem;
-}
-
-.summary-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    margin-bottom: 12px;
-}
-
-.summary-header h2 {
-    margin: 0;
-    font-size: 1rem;
-    font-weight: bold;
-    color: #111;
-}
-
-.summary-updated {
-    font-size: 0.8rem;
-    color: #999;
-}
-
-.summary-tiles {
-    display: flex;
-}
-
-.summary-tile {
-    flex: 1;
-    text-align: center;
-    padding: 0 16px;
-    border-right: 1px solid #ddd;
-}
-
-.summary-tile:first-child {
-    padding-left: 0;
-}
-
-.summary-tile:last-child {
-    border-right: none;
-    padding-right: 0;
-}
-
-.tile-label {
-    font-size: 0.78rem;
-    color: #999;
-    margin-bottom: 4px;
-}
-
-.tile-value {
-    font-size: 1.6rem;
-    font-weight: bold;
-    line-height: 1.1;
-}
-
-.tile-value .unit {
-    font-size: 0.9rem;
-    font-weight: normal;
-}
-
-.tile-dollars {
-    font-size: 0.82rem;
-    color: #999;
-    margin-top: 2px;
-}
+body{font-family:Arial,sans-serif;margin:16px;background:#f7f7f7;color:#222}
+h1{margin:0 0 12px;font-size:1.2rem}h2{margin:0 0 8px;font-size:.9rem}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.full{grid-column:1/-1}
+.card{background:white;padding:12px;border-radius:8px;min-width:0}
+canvas{max-width:100%;max-height:240px}
+table{width:100%;border-collapse:collapse;font-size:.8rem}
+th,td{padding:4px 6px;border-bottom:1px solid #ddd;text-align:right}
+th:first-child,td:first-child{text-align:left}
+.positive{color:green;font-weight:bold}.negative,.alert{color:#c33;font-weight:bold}
+.alert{font-size:.85rem;font-weight:normal}
+.summary-header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px}
+.summary-header h2{margin:0;font-size:1rem;font-weight:bold;color:#111}
+.summary-updated{font-size:.8rem;color:#999}.summary-tiles{display:flex}
+.summary-tile{flex:1;text-align:center;padding:0 16px;border-right:1px solid #ddd}
+.summary-tile:first-child{padding-left:0}.summary-tile:last-child{border:0;padding-right:0}
+.tile-label{font-size:.78rem;color:#999;margin-bottom:4px}
+.tile-value{font-size:1.6rem;font-weight:bold;line-height:1.1}
+.tile-value .unit{font-size:.9rem;font-weight:normal}
+.tile-dollars{font-size:.82rem;color:#999;margin-top:2px}
+.controls{display:flex;flex-wrap:wrap;align-items:center;gap:7px;margin:4px 0 10px;font-size:.78rem}
+.controls label{display:flex;align-items:center;gap:4px;color:#555}
+.controls select,.controls input{font:inherit;padding:4px 5px;border:1px solid #ccc;border-radius:4px;background:white;color:#222}
+.controls input[type=date]{max-width:135px}
+.hint{font-size:.72rem;color:#888;margin:4px 0 0}
+@media(max-width:700px){.grid{grid-template-columns:1fr}.full{grid-column:auto}.summary-tile{padding:0 7px}.tile-value{font-size:1.2rem}.controls{gap:6px}}
 </style>
 </head>
-
 <body>
-
 <h1>SolarEdge Production Monitor</h1>
-
 <div class="grid">
-
-    <div class="card full">
-        <div class="summary-header">
-            <h2>Energy Produced</h2>
-            <span class="summary-updated" id="summaryUpdated"></span>
-        </div>
-        <div class="summary-tiles">
-            <div class="summary-tile" id="tileMonth"></div>
-            <div class="summary-tile" id="tileYear"></div>
-            <div class="summary-tile" id="tileLifetime"></div>
-        </div>
-    </div>
-
-    <div class="card">
-        <h2>Last 7 Days</h2>
-        <canvas id="weekChart"></canvas>
-        <p id="weekEmpty" style="display:none; color:#666;">No daily data yet.</p>
-    </div>
-
-    <div class="card">
-        <h2>Year-over-Year Monthly Production</h2>
-        <canvas id="yearChart"></canvas>
-    </div>
-
-    <div class="card">
-        <h2>Average Monthly Production</h2>
-        <canvas id="monthlyAverageChart"></canvas>
-    </div>
-
-    <div class="card">
-        <h2>Current Year vs Expected</h2>
-        <table id="currentYearTable">
-            <thead>
-                <tr>
-                    <th>Month</th>
-                    <th>Actual kWh</th>
-                    <th>Average kWh</th>
-                    <th>Performance</th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
-    </div>
-
-    <div class="card">
-        <h2>Annual Performance</h2>
-        <table id="annualTable">
-            <thead>
-                <tr>
-                    <th>Year</th>
-                    <th>kWh</th>
-                    <th>kWh/kWp</th>
-                    <th>vs Average</th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
-    </div>
-
-    <div class="card">
-        <h2>Alerts</h2>
-        <div id="alerts"></div>
-    </div>
-
+<div class="card full">
+ <div class="summary-header"><h2>Energy Produced</h2><span class="summary-updated" id="summaryUpdated"></span></div>
+ <div class="summary-tiles"><div class="summary-tile" id="tileMonth"></div><div class="summary-tile" id="tileYear"></div><div class="summary-tile" id="tileLifetime"></div></div>
 </div>
-
-
+<div class="card">
+ <h2>Daily Production</h2>
+ <div class="controls">
+  <label>Period <select id="dailyPreset"><option value="7">7 days</option><option value="30" selected>30 days</option><option value="90">90 days</option><option value="180">6 months</option><option value="365">1 year</option><option value="all">All available</option><option value="custom">Custom</option></select></label>
+  <label>From <input type="date" id="dailyFrom"></label><label>To <input type="date" id="dailyTo"></label>
+ </div>
+ <canvas id="dailyChart"></canvas><p class="hint" id="dailyHint"></p>
+</div>
+<div class="card">
+ <h2>Year-over-Year Monthly Production</h2>
+ <div class="controls"><label>From year <select id="yoyFrom"></select></label><label>To year <select id="yoyTo"></select></label></div>
+ <canvas id="yearChart"></canvas>
+</div>
+<div class="card">
+ <h2>Average Monthly Production</h2>
+ <div class="controls"><label>Baseline from <select id="avgFrom"></select></label><label>to <select id="avgTo"></select></label></div>
+ <canvas id="monthlyAverageChart"></canvas><p class="hint">Only complete years in the selected range are included.</p>
+</div>
+<div class="card">
+ <h2>Year vs Expected</h2>
+ <div class="controls"><label>Year <select id="compareYear"></select></label><label>Baseline from <select id="compareFrom"></select></label><label>to <select id="compareTo"></select></label></div>
+ <table id="currentYearTable"><thead><tr><th>Month</th><th>Actual kWh</th><th>Average kWh</th><th>Performance</th></tr></thead><tbody></tbody></table>
+</div>
+<div class="card">
+ <h2>Annual Performance</h2>
+ <div class="controls"><label>From year <select id="annualFrom"></select></label><label>To year <select id="annualTo"></select></label></div>
+ <table id="annualTable"><thead><tr><th>Year</th><th>kWh</th><th>kWh/kWp</th><th>vs Average</th></tr></thead><tbody></tbody></table>
+</div>
+<div class="card"><h2>Alerts</h2><div id="alerts"></div></div>
+</div>
 <script>
-
-// Validated categorical palette (see dataviz color-formula) — fixed hue
-// order, distinguishable under color-vision deficiency simulation.
-const CATEGORICAL_COLORS = [
-    "#2a78d6", // blue
-    "#eb6834", // orange
-    "#1baf7a", // aqua
-    "#eda100", // yellow
-    "#e87ba4", // magenta
-    "#008300", // green
-    "#4a3aa7", // violet
-    "#e34948", // red
-];
-
-const monthNames = [
-    "",
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec"
-];
-
-
-// Update to your utility rate ($/kWh)
-const RATE_PER_KWH = 0.30;
-
-fetch("dashboard.json")
-.then(response => response.json())
-.then(data => {
-
-    renderSummary(data.summary);
-    renderWeekChart(data.week);
-    renderYearChart(data);
-    renderAnalytics(data.analytics);
-    renderAlerts(data.anomalies);
-
-});
-
-
-function fmt(val, decimals = 1) {
-    return val.toLocaleString("en-US", {
-        minimumFractionDigits: decimals,
-        maximumFractionDigits: decimals,
-    });
-}
-
-function kwh(val) {
-    if (val >= 1000) {
-        return `${fmt(val / 1000, 2)} <span class="unit">MWh</span>`;
-    }
-    return `${fmt(val, 0)} <span class="unit">kWh</span>`;
-}
-
-function usd(val) {
-    return (val * RATE_PER_KWH).toLocaleString("en-US", {
-        style: "currency",
-        currency: "USD",
-    });
-}
-
-function renderSummary(s) {
-    if (!s) return;
-
-    document.getElementById("tileMonth").innerHTML = `
-        <div class="tile-label">This Month</div>
-        <div class="tile-value">${kwh(s.this_month_kwh)}</div>
-        <div class="tile-dollars">${usd(s.this_month_kwh)}</div>
-    `;
-    document.getElementById("tileYear").innerHTML = `
-        <div class="tile-label">This Year</div>
-        <div class="tile-value">${kwh(s.this_year_kwh)}</div>
-        <div class="tile-dollars">${usd(s.this_year_kwh)}</div>
-    `;
-    document.getElementById("tileLifetime").innerHTML = `
-        <div class="tile-label">Lifetime</div>
-        <div class="tile-value">${kwh(s.lifetime_kwh)}</div>
-        <div class="tile-dollars">${usd(s.lifetime_kwh)}</div>
-    `;
-
-    if (s.last_date) {
-        document.getElementById("summaryUpdated").textContent =
-            `Updated ${s.last_date}`;
-    }
-}
-
-
-function renderWeekChart(week) {
-
-    const canvas = document.getElementById("weekChart");
-
-    if (!week || week.length === 0) {
-        canvas.style.display = "none";
-        document.getElementById("weekEmpty").style.display = "block";
-        return;
-    }
-
-    new Chart(
-        canvas,
-        {
-            type: "bar",
-            data: {
-                labels: week.map(d => d.date),
-                datasets: [{
-                    label: "kWh",
-                    data: week.map(d => d.energy_kwh),
-                    backgroundColor: CATEGORICAL_COLORS[0]
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: { display: false }
-                }
-            }
-        }
-    );
-}
-
-
-function renderYearChart(data) {
-
-    const years = Object.keys(data.monthly)
-        .sort()
-        .slice(-CATEGORICAL_COLORS.length);
-
-    const datasets = years.map((year, i) => {
-
-        const values = [];
-
-        for (let m = 1; m <= 12; m++) {
-            values.push(
-                data.monthly[year][
-                    String(m).padStart(2,"0")
-                ] || null
-            );
-        }
-
-        return {
-            label: year,
-            data: values,
-            tension: 0.2,
-            borderColor: CATEGORICAL_COLORS[i],
-            backgroundColor: CATEGORICAL_COLORS[i],
-        };
-
-    });
-
-
-    new Chart(
-        document.getElementById("yearChart"),
-        {
-            type: "line",
-            data: {
-                labels: monthNames.slice(1),
-                datasets
-            },
-            options: {
-                responsive: true,
-                interaction: {
-                    mode: "index",
-                    intersect: false
-                }
-            }
-        }
-    );
-}
-
-
-function renderAnalytics(analytics) {
-
-    renderMonthlyAverage(
-        analytics.monthly_average
-    );
-
-    renderCurrentYear(
-        analytics.current_year_vs_average
-    );
-
-    renderAnnual(
-        analytics.annual_summary
-    );
-
-}
-
-
-function renderMonthlyAverage(avg) {
-
-    new Chart(
-        document.getElementById(
-            "monthlyAverageChart"
-        ),
-        {
-            type: "bar",
-            data: {
-                labels: Array.from(
-                    {length: 12},
-                    (_, i) => monthNames[i + 1]
-                ),
-
-                datasets: [{
-                    label: "Average kWh",
-
-                    data: Array.from(
-                        {length: 12},
-                        (_, i) =>
-                            avg[
-                              String(i + 1)
-                              .padStart(2,"0")
-                            ] || 0
-                    )
-                }]
-            }
-        }
-    );
-}
-
-
-function renderCurrentYear(rows) {
-
-    const tbody =
-        document.querySelector(
-            "#currentYearTable tbody"
-        );
-
-    tbody.innerHTML = "";
-
-    Object.entries(rows)
-    .sort()
-    .forEach(([month, value]) => {
-
-        const positive =
-            value.deviation_pct >= 0;
-
-        tbody.innerHTML += `
-        <tr>
-            <td>
-                ${monthNames[
-                    Number(month)
-                ]}
-            </td>
-
-            <td>
-                ${fmt(value.actual)}
-            </td>
-
-            <td>
-                ${fmt(value.average)}
-            </td>
-
-            <td class="${
-                positive
-                ? "positive"
-                : "negative"
-            }">
-
-                ${
-                    positive ? "+" : ""
-                }${value.deviation_pct}%
-
-            </td>
-        </tr>
-        `;
-    });
-}
-
-
-function renderAnnual(rows) {
-
-    const tbody =
-        document.querySelector(
-            "#annualTable tbody"
-        );
-
-    tbody.innerHTML = "";
-
-    Object.entries(rows)
-    .sort()
-    .forEach(([year,value]) => {
-
-        const positive =
-            value.vs_average_pct >= 0;
-
-        tbody.innerHTML += `
-        <tr>
-            <td>
-                ${year}
-            </td>
-
-            <td>
-                ${fmt(value.energy_kwh)}
-            </td>
-
-            <td>
-                ${fmt(value.specific_yield)}
-            </td>
-
-            <td class="${
-                positive
-                ? "positive"
-                : "negative"
-            }">
-
-                ${
-                    positive ? "+" : ""
-                }${value.vs_average_pct}%
-
-            </td>
-        </tr>
-        `;
-    });
-}
-
-
-function renderAlerts(alerts) {
-
-    const div =
-        document.getElementById(
-            "alerts"
-        );
-
-    if (!alerts || alerts.length === 0) {
-        div.innerHTML =
-            "No anomalies detected.";
-        return;
-    }
-
-    div.innerHTML =
-        alerts.map(a => `
-            <div class="alert">
-            ${monthNames[
-                Number(a.month)
-            ]}:
-            ${a.actual} kWh
-            vs average
-            ${a.average} kWh
-            </div>
-        `).join("");
-
-}
-
+const COLORS=["#2a78d6","#eb6834","#1baf7a","#eda100","#e87ba4","#008300","#4a3aa7","#e34948"];
+const MONTHS=["","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+const RATE_PER_KWH=.30, SYSTEM_KWP=3.97;
+let dashboard, dailyChart, yoyChart, averageChart;
+const byId=id=>document.getElementById(id);
+const fmt=(v,d=1)=>Number(v).toLocaleString("en-US",{minimumFractionDigits:d,maximumFractionDigits:d});
+const kwh=v=>v>=1000?`${fmt(v/1000,2)} <span class="unit">MWh</span>`:`${fmt(v,0)} <span class="unit">kWh</span>`;
+const usd=v=>(v*RATE_PER_KWH).toLocaleString("en-US",{style:"currency",currency:"USD"});
+const years=()=>Object.keys(dashboard.monthly).sort();
+const monthMap=()=>dashboard.monthly;
+const records=()=>dashboard.records||[];
+function addYearOptions(id, selected){const el=byId(id);el.innerHTML=years().map(y=>`<option value="${y}" ${y===String(selected)?"selected":""}>${y}</option>`).join("");}
+function setYearRange(fromId,toId,from,to){addYearOptions(fromId,from);addYearOptions(toId,to);}
+function selectedRange(fromId,toId){let a=Number(byId(fromId).value),b=Number(byId(toId).value);if(a>b){[a,b]=[b,a];byId(fromId).value=a;byId(toId).value=b;}return [a,b];}
+function averageByMonth(from,to){const result={};for(let m=1;m<=12;m++){const vals=[];for(let y=from;y<=to;y++){const v=monthMap()[y]?.[String(m).padStart(2,"0")];if(Number.isFinite(Number(v)))vals.push(Number(v));}result[String(m).padStart(2,"0")]=vals.length?vals.reduce((a,b)=>a+b,0)/vals.length:null;}return result;}
+function renderSummary(s){if(!s)return;byId("tileMonth").innerHTML=`<div class="tile-label">This Month</div><div class="tile-value">${kwh(s.this_month_kwh)}</div><div class="tile-dollars">${usd(s.this_month_kwh)}</div>`;byId("tileYear").innerHTML=`<div class="tile-label">This Year</div><div class="tile-value">${kwh(s.this_year_kwh)}</div><div class="tile-dollars">${usd(s.this_year_kwh)}</div>`;byId("tileLifetime").innerHTML=`<div class="tile-label">Lifetime</div><div class="tile-value">${kwh(s.lifetime_kwh)}</div><div class="tile-dollars">${usd(s.lifetime_kwh)}</div>`;if(s.last_date)byId("summaryUpdated").textContent="Updated "+s.last_date;}
+function renderDaily(){const all=records().filter(r=>r.period==="day"&&r.energy_kwh!==""&&r.energy_kwh!==null).sort((a,b)=>a.date.localeCompare(b.date));if(!all.length)return;const last=all[all.length-1].date;let from=byId("dailyFrom").value,to=byId("dailyTo").value;const preset=byId("dailyPreset").value;if(preset!=="custom"){to=last;if(preset==="all")from=all[0].date;else{const d=new Date(last+"T12:00:00");d.setDate(d.getDate()-Number(preset)+1);from=d.toISOString().slice(0,10);}byId("dailyFrom").value=from;byId("dailyTo").value=to;}const filtered=all.filter(r=>r.date>=from&&r.date<=to);if(dailyChart)dailyChart.destroy();dailyChart=new Chart(byId("dailyChart"),{type:"bar",data:{labels:filtered.map(r=>r.date),datasets:[{label:"kWh",data:filtered.map(r=>Number(r.energy_kwh)),backgroundColor:COLORS[0]}]},options:{responsive:true,maintainAspectRatio:true,plugins:{legend:{display:false}},scales:{x:{ticks:{maxTicksLimit:12,maxRotation:45,minRotation:0}}}}});byId("dailyHint").textContent=filtered.length?`${filtered.length} daily readings · ${fmt(filtered.reduce((s,r)=>s+Number(r.energy_kwh),0))} kWh in selected period`:"No daily readings in this date range.";}
+function renderYoy(){const [from,to]=selectedRange("yoyFrom","yoyTo");const list=years().filter(y=>Number(y)>=from&&Number(y)<=to);const datasets=list.map((y,i)=>({label:y,data:Array.from({length:12},(_,m)=>monthMap()[y]?.[String(m+1).padStart(2,"0")]??null),tension:.2,borderColor:COLORS[i%COLORS.length],backgroundColor:COLORS[i%COLORS.length]}));if(yoyChart)yoyChart.destroy();yoyChart=new Chart(byId("yearChart"),{type:"line",data:{labels:MONTHS.slice(1),datasets},options:{responsive:true,interaction:{mode:"index",intersect:false}}});}
+function renderAverage(){const [from,to]=selectedRange("avgFrom","avgTo");const avg=averageByMonth(from,to);if(averageChart)averageChart.destroy();averageChart=new Chart(byId("monthlyAverageChart"),{type:"bar",data:{labels:MONTHS.slice(1),datasets:[{label:"Average kWh",data:Array.from({length:12},(_,i)=>avg[String(i+1).padStart(2,"0")]),backgroundColor:COLORS[0]}]},options:{responsive:true,plugins:{tooltip:{callbacks:{label:c=>c.raw===null?"No data":fmt(c.raw)+" kWh"}}}}});}
+function renderComparison(){const year=byId("compareYear").value,[from,to]=selectedRange("compareFrom","compareTo");const avg=averageByMonth(from,to),actual=monthMap()[year]||{},tbody=byId("currentYearTable").querySelector("tbody");tbody.innerHTML="";for(let m=1;m<=12;m++){const key=String(m).padStart(2,"0"),a=actual[key],e=avg[key];if(a===undefined||e===null)continue;const pct=(Number(a)/e-1)*100,cls=pct>=0?"positive":"negative";tbody.insertAdjacentHTML("beforeend",`<tr><td>${MONTHS[m]}</td><td>${fmt(a)}</td><td>${fmt(e)}</td><td class="${cls}">${pct>=0?"+":""}${fmt(pct)}%</td></tr>`);}}
+function renderAnnual(){const [from,to]=selectedRange("annualFrom","annualTo");const annual=dashboard.analytics?.annual_summary||{},tbody=byId("annualTable").querySelector("tbody");tbody.innerHTML="";Object.entries(annual).sort().filter(([y])=>Number(y)>=from&&Number(y)<=to).forEach(([y,v])=>tbody.insertAdjacentHTML("beforeend",`<tr><td>${y}</td><td>${fmt(v.energy_kwh)}</td><td>${fmt(v.specific_yield)}</td><td class="${v.vs_average_pct>=0?"positive":"negative"}">${v.vs_average_pct>=0?"+":""}${fmt(v.vs_average_pct)}%</td></tr>`));}
+function renderAlerts(alerts){byId("alerts").innerHTML=!alerts?.length?"No anomalies detected.":alerts.map(a=>`<div class="alert">${MONTHS[Number(a.month)]}: ${a.actual} kWh vs average ${a.average} kWh</div>`).join("");}
+function init(){const ys=years(),first=ys[0],last=ys[ys.length-1],historicalEnd=String(Math.min(Number(last)-1,2025));setYearRange("yoyFrom","yoyTo",Math.max(Number(first),Number(last)-7).toString(),last);setYearRange("avgFrom","avgTo",first,historicalEnd);addYearOptions("compareYear",last);setYearRange("compareFrom","compareTo",first,historicalEnd);setYearRange("annualFrom","annualTo",first,last);renderSummary(dashboard.summary);renderDaily();renderYoy();renderAverage();renderComparison();renderAnnual();renderAlerts(dashboard.anomalies);
+byId("dailyPreset").addEventListener("change",renderDaily);byId("dailyFrom").addEventListener("change",()=>{byId("dailyPreset").value="custom";renderDaily();});byId("dailyTo").addEventListener("change",()=>{byId("dailyPreset").value="custom";renderDaily();});
+["yoyFrom","yoyTo"].forEach(id=>byId(id).addEventListener("change",renderYoy));["avgFrom","avgTo"].forEach(id=>byId(id).addEventListener("change",renderAverage));["compareYear","compareFrom","compareTo"].forEach(id=>byId(id).addEventListener("change",renderComparison));["annualFrom","annualTo"].forEach(id=>byId(id).addEventListener("change",renderAnnual));}
+fetch("dashboard.json").then(r=>{if(!r.ok)throw new Error("Could not load dashboard data");return r.json();}).then(data=>{dashboard=data;init();}).catch(err=>{document.querySelector(".grid").insertAdjacentHTML("afterbegin",`<div class="card full alert">Dashboard data could not be loaded: ${err.message}</div>`);});
 </script>
-
 </body>
 </html>
