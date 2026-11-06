@@ -1,6 +1,11 @@
 name: SolarEdge Monitor
 
 on:
+  push:
+    paths:
+      - 'app/**'
+      - 'tests/**'
+      - '.github/workflows/monitor.yml'
   schedule:
     - cron: '15 8 * * *'
   workflow_dispatch:
