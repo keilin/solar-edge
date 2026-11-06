@@ -99,7 +99,7 @@ The workflow exposes this secret as `GH_TOKEN` to the GitHub CLI. It uses the to
 
 ## GitHub Actions workflows
 
-The repository keeps three workflows under `.github/workflows/`:
+The repository keeps three workflows under `.github/workflows/`. See the [workflow reference](docs/WORKFLOWS.md) for details:
 
 - **SolarEdge Monitor** (`monitor.yml`) — the primary scheduled workflow. It runs daily at 08:15 UTC, can also be started manually, and runs automatically when application code, tests, or its own workflow definition change. It runs the unit tests, retrieves the latest seven days of daily production, refreshes monthly totals for the three most recently completed months, retrieves the current month's total, rebuilds the dashboard data, and commits changes to `data/` and `docs/`. Rechecking recent dates allows provisional SolarEdge readings to be corrected.
 - **SolarEdge Daily History Backfill** (`backfill.yml`) — a manual, one-time maintenance workflow for retrieving historical daily production from March 2017 through yesterday. Use **Actions → SolarEdge Daily History Backfill → Run workflow** only when the historical daily CSV needs to be rebuilt or extended. It can take several minutes and may encounter SolarEdge API rate limits; do not run it routinely.
