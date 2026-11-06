@@ -5,16 +5,10 @@ import json
 
 
 def _refresh_completed_months(client, store, today):
-    """Refresh the three most recently completed monthly SolarEdge totals."""
+    """Refresh all completed months in the current calendar year."""
     current_month = date(today.year, today.month, 1)
+    start_day = date(today.year, 1, 1)
     end_day = current_month - timedelta(days=1)
-
-    # Walk back to the first day of the month three months before this one.
-    first_previous_month = date(end_day.year, end_day.month, 1)
-    start_day = first_previous_month
-    for _ in range(2):
-        start_day -= timedelta(days=1)
-        start_day = date(start_day.year, start_day.month, 1)
 
     result = client.monthly_energy(start_day.isoformat(), end_day.isoformat())
     values = result.get("values", []) if isinstance(result, dict) else []
@@ -37,7 +31,6 @@ def _refresh_completed_months(client, store, today):
         refreshed.append({"month": month, "energy_kwh": energy_kwh})
 
     return refreshed
-
 
 def main():
     client = SolarEdgeClient()
