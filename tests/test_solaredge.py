@@ -64,6 +64,26 @@ class SolarEdgeClientTests(unittest.TestCase):
         with self.assertRaisesRegex(RuntimeError, "invalid_grant"):
             self.client._refresh_access_token()
 
+    @patch("app.solaredge.time.sleep")
+    def test_token_refresh_retries_transient_server_error(self, sleep):
+        failed = Mock()
+        failed.status_code = 500
+        failed.text = '{"message":"An unexpected error occurred"}'
+        failed.headers = {}
+        success = self.response({
+            "access_token": "access-after-retry",
+            "refresh_token": "refresh-after-retry",
+            "expires_in": 3600,
+        })
+        self.session.post.side_effect = [failed, success]
+
+        self.client._refresh_access_token()
+
+        self.assertEqual(self.session.post.call_count, 2)
+        self.assertEqual(self.client.access_token, "access-after-retry")
+        self.assertEqual(self.client.refresh_token, "refresh-after-retry")
+        sleep.assert_called_once_with(5)
+
     def test_energy_uses_v2_path_bearer_token_and_preserves_response(self):
         self.client.access_token = "access-token"
         self.client.access_token_expires_at = 9999999999
