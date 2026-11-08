@@ -50,19 +50,12 @@ class SolarEdgeClient:
                     timeout=30,
                 )
             except requests.RequestException as exc:
-                if attempt == max_attempts - 1:
-                    raise RuntimeError(
-                        f"SolarEdge OAuth token refresh failed after "
-                        f"{max_attempts} attempts: {exc}"
-                    ) from exc
-                delay = min(5 * (2 ** attempt), 60)
-                print(
-                    f"SolarEdge OAuth connection error; retrying in "
-                    f"{delay} seconds (attempt {attempt + 2}/{max_attempts}).",
-                    flush=True,
-                )
-                time.sleep(delay)
-                continue
+                # A timeout can occur after SolarEdge has already rotated the
+                # refresh token. Retrying an ambiguous request could then
+                # replay an invalidated token, so fail rather than risk that.
+                raise RuntimeError(
+                    f"SolarEdge OAuth token refresh request failed: {exc}"
+                ) from exc
 
             if response.status_code in (500, 502, 503, 504, 429):
                 if attempt == max_attempts - 1:
