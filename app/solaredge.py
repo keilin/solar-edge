@@ -31,20 +31,20 @@ class SolarEdgeClient:
         self.refresh_token = refresh_token
 
     def _refresh_access_token(self):
-        # SolarEdge's OAuth endpoint expects application/x-www-form-urlencoded,
-        # not a JSON request body. Its token service can return transient 5xx
-        # errors; retry those (and connection failures) without changing the
-        # refresh token. Do not retry 4xx responses, which usually indicate a
-        # credential or grant problem.
+        # SolarEdge Monitoring API V2 expects OAuth token parameters as JSON.
+        # Its token service can return transient 5xx errors; retry those
+        # without changing the refresh token. Do not retry 4xx responses,
+        # which usually indicate a credential or grant problem.
         max_attempts = 5
         for attempt in range(max_attempts):
             try:
                 response = self.session.post(
                     TOKEN_URL,
-                    auth=(self.client_id, self.client_secret),
-                    data={
+                    json={
                         "grant_type": "refresh_token",
                         "refresh_token": self.refresh_token,
+                        "client_id": self.client_id,
+                        "client_secret": self.client_secret,
                     },
                     headers={"Accept": "application/json"},
                     timeout=30,
