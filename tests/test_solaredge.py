@@ -27,7 +27,7 @@ class SolarEdgeClientTests(unittest.TestCase):
         response.raise_for_status.return_value = None
         return response
 
-    def test_refresh_uses_basic_auth_form_data_and_rotates_refresh_token(self):
+    def test_refresh_uses_json_body_and_rotates_refresh_token(self):
         with tempfile.NamedTemporaryFile() as token_file:
             os.environ["SOLAREDGE_REFRESH_TOKEN_FILE"] = token_file.name
             self.addCleanup(os.environ.pop, "SOLAREDGE_REFRESH_TOKEN_FILE", None)
@@ -41,10 +41,11 @@ class SolarEdgeClientTests(unittest.TestCase):
 
             self.session.post.assert_called_once_with(
                 TOKEN_URL,
-                auth=("client-id", "client-secret"),
-                data={
+                json={
                     "grant_type": "refresh_token",
                     "refresh_token": "refresh-old",
+                    "client_id": "client-id",
+                    "client_secret": "client-secret",
                 },
                 headers={"Accept": "application/json"},
                 timeout=30,
