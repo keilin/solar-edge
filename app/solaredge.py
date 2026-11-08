@@ -32,27 +32,69 @@ class SolarEdgeClient:
 
     def _refresh_access_token(self):
         # SolarEdge's OAuth endpoint expects application/x-www-form-urlencoded,
-        # not a JSON request body.
-        response = self.session.post(
-            TOKEN_URL,
-            auth=(self.client_id, self.client_secret),
-            data={
-                "grant_type": "refresh_token",
-                "refresh_token": self.refresh_token,
-            },
-            headers={"Accept": "application/json"},
-            timeout=30,
-        )
-        try:
-            response.raise_for_status()
-        except requests.HTTPError as exc:
-            # Include SolarEdge's error payload in the Actions log; it is
-            # needed to distinguish invalid_client from invalid_grant, etc.
-            detail = getattr(response, "text", "")
-            raise RuntimeError(
-                f"SolarEdge OAuth token refresh failed (HTTP "
-                f"{response.status_code}): {detail}"
-            ) from exc
+        # not a JSON request body. Its token service can return transient 5xx
+        # errors; retry those (and connection failures) without changing the
+        # refresh token. Do not retry 4xx responses, which usually indicate a
+        # credential or grant problem.
+        max_attempts = 5
+        for attempt in range(max_attempts):
+            try:
+                response = self.session.post(
+                    TOKEN_URL,
+                    auth=(self.client_id, self.client_secret),
+                    data={
+                        "grant_type": "refresh_token",
+                        "refresh_token": self.refresh_token,
+                    },
+                    headers={"Accept": "application/json"},
+                    timeout=30,
+                )
+            except requests.RequestException as exc:
+                if attempt == max_attempts - 1:
+                    raise RuntimeError(
+                        f"SolarEdge OAuth token refresh failed after "
+                        f"{max_attempts} attempts: {exc}"
+                    ) from exc
+                delay = min(5 * (2 ** attempt), 60)
+                print(
+                    f"SolarEdge OAuth connection error; retrying in "
+                    f"{delay} seconds (attempt {attempt + 2}/{max_attempts}).",
+                    flush=True,
+                )
+                time.sleep(delay)
+                continue
+
+            if response.status_code in (500, 502, 503, 504, 429):
+                if attempt == max_attempts - 1:
+                    detail = getattr(response, "text", "")
+                    raise RuntimeError(
+                        f"SolarEdge OAuth token refresh failed after "
+                        f"{max_attempts} attempts (HTTP "
+                        f"{response.status_code}): {detail}"
+                    )
+                retry_after = getattr(response, "headers", {}).get("Retry-After")
+                try:
+                    delay = max(1, int(float(retry_after))) if retry_after else min(5 * (2 ** attempt), 60)
+                except (TypeError, ValueError):
+                    delay = min(5 * (2 ** attempt), 60)
+                print(
+                    f"SolarEdge OAuth endpoint returned HTTP "
+                    f"{response.status_code}; retrying in {delay} seconds "
+                    f"(attempt {attempt + 2}/{max_attempts}).",
+                    flush=True,
+                )
+                time.sleep(delay)
+                continue
+
+            try:
+                response.raise_for_status()
+            except requests.HTTPError as exc:
+                detail = getattr(response, "text", "")
+                raise RuntimeError(
+                    f"SolarEdge OAuth token refresh failed (HTTP "
+                    f"{response.status_code}): {detail}"
+                ) from exc
+            break
 
         payload = response.json()
         access_token = payload.get("access_token")
