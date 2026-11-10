@@ -232,7 +232,7 @@ date,period,energy_kwh,source
 2026-10-31,day,7.837,solaredge
 2026-11-01,day,15.295,solaredge
 2026-11-02,day,7.408,solaredge
-2026-11,month,97.799,solaredge
+2026-11,month,109.164,solaredge
 2026-11-03,day,6.429,solaredge
 2026-11-04,day,14.325,solaredge
 2026-11-05,day,14.647,solaredge
@@ -3615,3 +3615,4 @@ date,period,energy_kwh,source
 2026-11-06,day,13.182,solaredge
 2026-11-07,day,13.848,solaredge
 2026-11-08,day,12.665,solaredge
+2026-11-09,day,11.365,solaredge
