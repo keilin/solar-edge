@@ -100,14 +100,14 @@ function renderYoy(){
  let labels,datasets,partial=[];
  if(quarterly){
   const byQuarter={};
-  for(const r of records().filter(r=>r.period==="month"&&/^\\d{4}-\\d{2}$/.test(r.date)&&r.energy_kwh!==""&&r.energy_kwh!==null)){
+  for(const r of records().filter(r=>r.period==="month"&&/^\d{4}-\d{2}$/.test(r.date)&&r.energy_kwh!==""&&r.energy_kwh!==null)){
    const [year,month]=r.date.split("-"),q=Math.floor((Number(month)-1)/3)+1,key=year+" Q"+q;
    byQuarter[key]??={year,q,total:0,months:0};
    byQuarter[key].total+=Number(r.energy_kwh);
    byQuarter[key].months++;
   }
   const quarters=Object.values(byQuarter).sort((a,b)=>a.year.localeCompare(b.year)||a.q-b.q);
-  labels=quarters.map((q,i)=>(i===0||q.year!==quarters[i-1].year?q.year+"\\n":"")+"Q"+q.q+(q.months<3?"*":""));
+  labels=quarters.map((q,i)=>(i===0||q.year!==quarters[i-1].year?q.year+"\n":"")+"Q"+q.q+(q.months<3?"*":""));
   partial=quarters.map(q=>q.months);
   datasets=[{label:"Quarterly production",data:quarters.map(q=>q.total),tension:.2,borderColor:COLORS[0],backgroundColor:COLORS[0]}];
   byId("yoyHint").textContent=quarters.length?"Showing "+quarters.length+" quarters, "+quarters[0].year+"–"+quarters[quarters.length-1].year+". * Incomplete quarter. Tooltip shows change from the previous quarter.":"No monthly production records found.";
