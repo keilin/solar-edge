@@ -112,12 +112,9 @@ function renderYoy(){
    return {
     label:year,
     data:totals.map((total,q)=>counts[q]?total:null),
-    tension:.2,
-    spanGaps:false,
     borderColor:COLORS[i%COLORS.length],
     backgroundColor:COLORS[i%COLORS.length],
-    pointRadius:2,
-    pointHoverRadius:5,
+    borderWidth:1,
     _monthCounts:counts
    };
   });
@@ -130,7 +127,7 @@ function renderYoy(){
   byId("yoyHint").textContent="";
  }
  if(yoyChart)yoyChart.destroy();
- yoyChart=new Chart(byId("yearChart"),{type:"line",data:{labels,datasets},options:{responsive:true,interaction:{mode:"index",intersect:false},scales:{x:{ticks:{autoSkip:false,maxRotation:0,minRotation:0,font:{size:9}}}},plugins:{tooltip:{callbacks:{label:ctx=>{
+ yoyChart=new Chart(byId("yearChart"),{type:quarterly?"bar":"line",data:{labels,datasets},options:{responsive:true,interaction:{mode:"index",intersect:false},scales:{x:{stacked:false,ticks:{autoSkip:false,maxRotation:0,minRotation:0,font:{size:9}}},y:{beginAtZero:true}},plugins:{tooltip:{callbacks:{label:ctx=>{
   const value=Number(ctx.raw);
   if(!quarterly)return ctx.dataset.label+": "+fmt(value)+" kWh";
   const counts=ctx.dataset._monthCounts||[],q=ctx.dataIndex;
