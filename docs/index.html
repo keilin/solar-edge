@@ -48,7 +48,7 @@ th:first-child,td:first-child{text-align:left}
  </div>
  <canvas id="dailyChart"></canvas><p class="hint" id="dailyHint"></p>
 </div>
-<div class="card">
+<div class="card" id="yoyCard">
  <h2 id="yoyTitle">Year-over-Year Monthly Production</h2>
  <div class="controls">
   <label>View <select id="yoyView"><option value="monthly" selected>Year-over-year monthly</option><option value="quarterly">Quarter-over-quarter</option></select></label>
@@ -93,6 +93,7 @@ function renderSummary(s){if(!s)return;byId("tileMonth").innerHTML=`<div class="
 function renderDaily(){const all=records().filter(r=>r.period==="day"&&r.energy_kwh!==""&&r.energy_kwh!==null).sort((a,b)=>a.date.localeCompare(b.date));if(!all.length)return;const last=all[all.length-1].date;let from=byId("dailyFrom").value,to=byId("dailyTo").value;const preset=byId("dailyPreset").value;if(preset!=="custom"){to=last;if(preset==="all")from=all[0].date;else{const d=new Date(last+"T12:00:00");d.setDate(d.getDate()-Number(preset)+1);from=d.toISOString().slice(0,10);}byId("dailyFrom").value=from;byId("dailyTo").value=to;}const filtered=all.filter(r=>r.date>=from&&r.date<=to);if(dailyChart)dailyChart.destroy();dailyChart=new Chart(byId("dailyChart"),{type:"bar",data:{labels:filtered.map(r=>r.date),datasets:[{label:"kWh",data:filtered.map(r=>Number(r.energy_kwh)),backgroundColor:COLORS[0]}]},options:{responsive:true,maintainAspectRatio:true,plugins:{legend:{display:false}},scales:{x:{ticks:{maxTicksLimit:12,maxRotation:45,minRotation:0}}}}});byId("dailyHint").textContent=filtered.length?`${filtered.length} daily readings · ${fmt(filtered.reduce((s,r)=>s+Number(r.energy_kwh),0))} kWh in selected period`:"No daily readings in this date range.";}
 function renderYoy(){
  const quarterly=byId("yoyView").value==="quarterly";
+ byId("yoyCard").classList.toggle("full",quarterly);
  byId("yoyTitle").textContent=quarterly?"Quarter-over-Quarter Production":"Year-over-Year Monthly Production";
  byId("yoyFromLabel").style.display=quarterly?"none":"";
  byId("yoyToLabel").style.display=quarterly?"none":"";
@@ -120,7 +121,7 @@ function renderYoy(){
   byId("yoyHint").textContent="";
  }
  if(yoyChart)yoyChart.destroy();
- yoyChart=new Chart(byId("yearChart"),{type:"line",data:{labels,datasets},options:{responsive:true,interaction:{mode:"index",intersect:false},scales:{x:{ticks:{autoSkip:false,maxRotation:90,minRotation:60,font:{size:9}}}},plugins:{tooltip:{callbacks:{label:ctx=>{
+ yoyChart=new Chart(byId("yearChart"),{type:"line",data:{labels,datasets},options:{responsive:true,interaction:{mode:"index",intersect:false},scales:{x:{ticks:{autoSkip:false,maxRotation:0,minRotation:0,font:{size:9},callback:(value,index)=>{if(!quarterly)return this.getLabelForValue(value);const parts=String(labels[index]).split(" ");const prior=index?String(labels[index-1]).split(" ")[0]:null;return parts[0]!==prior?[parts[0],parts[1]]:parts[1];}}}},plugins:{tooltip:{callbacks:{label:ctx=>{
   const value=Number(ctx.raw);
   if(!quarterly)return ctx.dataset.label+": "+fmt(value)+" kWh";
   const idx=ctx.dataIndex,prev=idx>0?Number(ctx.dataset.data[idx-1]):null;
