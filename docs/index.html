@@ -121,7 +121,7 @@ function renderYoy(){
   byId("yoyHint").textContent="";
  }
  if(yoyChart)yoyChart.destroy();
- yoyChart=new Chart(byId("yearChart"),{type:"line",data:{labels,datasets},options:{responsive:true,interaction:{mode:"index",intersect:false},scales:{x:{ticks:{autoSkip:false,maxRotation:0,minRotation:0,font:{size:9},callback:(value,index)=>{if(!quarterly)return this.getLabelForValue(value);const parts=String(labels[index]).split(" ");const prior=index?String(labels[index-1]).split(" ")[0]:null;return parts[0]!==prior?[parts[0],parts[1]]:parts[1];}}}},plugins:{tooltip:{callbacks:{label:ctx=>{
+ yoyChart=new Chart(byId("yearChart"),{type:"line",data:{labels,datasets},options:{responsive:true,interaction:{mode:"index",intersect:false},scales:{x:{ticks:{autoSkip:false,maxRotation:0,minRotation:0,font:{size:9},callback:(value,index)=>{if(!quarterly)return labels[index];const parts=String(labels[index]).split(" ");const prior=index?String(labels[index-1]).split(" ")[0]:null;return parts[0]!==prior?[parts[0],parts[1]]:parts[1];}}}},plugins:{tooltip:{callbacks:{label:ctx=>{
   const value=Number(ctx.raw);
   if(!quarterly)return ctx.dataset.label+": "+fmt(value)+" kWh";
   const idx=ctx.dataIndex,prev=idx>0?Number(ctx.dataset.data[idx-1]):null;
