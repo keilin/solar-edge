@@ -96,24 +96,32 @@ function renderYoy(){
  byId("yoyTitle").textContent=quarterly?"Quarter-over-Quarter Production":"Year-over-Year Monthly Production";
  byId("yoyFromLabel").style.display=quarterly?"none":"";
  byId("yoyToLabel").style.display=quarterly?"none":"";
- let labels,datasets,partial=[];
+ let labels,datasets;
  if(quarterly){
-  const byQuarter={};
-  for(const [year,months] of Object.entries(monthMap())){
+  labels=["Q1","Q2","Q3","Q4"];
+  const yearList=years();
+  datasets=yearList.map((year,i)=>{
+   const months=monthMap()[year]||{},totals=[0,0,0,0],counts=[0,0,0,0];
    for(let month=1;month<=12;month++){
     const value=months[String(month).padStart(2,"0")];
     if(value===undefined||value===null||value==="")continue;
-    const q=Math.floor((month-1)/3)+1,key=year+" Q"+q;
-    byQuarter[key]??={year,q,total:0,months:0};
-    byQuarter[key].total+=Number(value);
-    byQuarter[key].months++;
+    const q=Math.floor((month-1)/3);
+    totals[q]+=Number(value);
+    counts[q]++;
    }
-  }
-  const quarters=Object.values(byQuarter).sort((a,b)=>Number(a.year)-Number(b.year)||a.q-b.q);
-  labels=quarters.map(q=>q.year+" Q"+q.q+(q.months<3?"*":""));
-  partial=quarters.map(q=>q.months);
-  datasets=[{label:"Quarterly production",data:quarters.map(q=>q.total),tension:.2,pointRadius:2,pointHoverRadius:5,borderColor:COLORS[0],backgroundColor:COLORS[0]}];
-  byId("yoyHint").textContent=quarters.length?"Showing "+quarters.length+" quarters, "+quarters[0].year+"–"+quarters[quarters.length-1].year+". * Incomplete quarter. Tooltip shows change from the previous quarter.":"No monthly production records found.";
+   return {
+    label:year,
+    data:totals.map((total,q)=>counts[q]?total:null),
+    tension:.2,
+    spanGaps:false,
+    borderColor:COLORS[i%COLORS.length],
+    backgroundColor:COLORS[i%COLORS.length],
+    pointRadius:2,
+    pointHoverRadius:5,
+    _monthCounts:counts
+   };
+  });
+  byId("yoyHint").textContent="Each line is a year; compare Q1 with Q1, Q2 with Q2, and so on. Incomplete quarters are included using available months.";
  }else{
   const [from,to]=selectedRange("yoyFrom","yoyTo");
   const list=years().filter(y=>Number(y)>=from&&Number(y)<=to);
@@ -122,12 +130,14 @@ function renderYoy(){
   byId("yoyHint").textContent="";
  }
  if(yoyChart)yoyChart.destroy();
- yoyChart=new Chart(byId("yearChart"),{type:"line",data:{labels,datasets},options:{responsive:true,interaction:{mode:"index",intersect:false},scales:{x:{ticks:{autoSkip:quarterly,maxTicksLimit:12,maxRotation:0,minRotation:0,font:{size:9},callback:(value,index)=>labels[index]}}},plugins:{tooltip:{callbacks:{label:ctx=>{
+ yoyChart=new Chart(byId("yearChart"),{type:"line",data:{labels,datasets},options:{responsive:true,interaction:{mode:"index",intersect:false},scales:{x:{ticks:{autoSkip:false,maxRotation:0,minRotation:0,font:{size:9}}}},plugins:{tooltip:{callbacks:{label:ctx=>{
   const value=Number(ctx.raw);
   if(!quarterly)return ctx.dataset.label+": "+fmt(value)+" kWh";
-  const idx=ctx.dataIndex,prev=idx>0?Number(ctx.dataset.data[idx-1]):null;
-  const change=prev!==null&&prev!==0?" · "+(value>=prev?"+":"")+fmt((value/prev-1)*100)+"% vs prior quarter":"";
-  return fmt(value)+" kWh"+change;
+  const counts=ctx.dataset._monthCounts||[],q=ctx.dataIndex;
+  const partial=counts[q]<3?" ("+counts[q]+" of 3 months)": "";
+  const previous=q>0?Number(ctx.dataset.data[q-1]):null;
+  const change=previous!==null&&previous!==0?" · "+(value>=previous?"+":"")+fmt((value/previous-1)*100)+"% vs prior quarter":"";
+  return ctx.dataset.label+": "+fmt(value)+" kWh"+partial+change;
  }}}}}});
 }
 function renderAverage(){const [from,to]=selectedRange("avgFrom","avgTo");const avg=averageByMonth(from,to);if(averageChart)averageChart.destroy();averageChart=new Chart(byId("monthlyAverageChart"),{type:"bar",data:{labels:MONTHS.slice(1),datasets:[{label:"Average kWh",data:Array.from({length:12},(_,i)=>avg[String(i+1).padStart(2,"0")]),backgroundColor:COLORS[0]}]},options:{responsive:true,plugins:{tooltip:{callbacks:{label:c=>c.raw===null?"No data":fmt(c.raw)+" kWh"}}}}});}
