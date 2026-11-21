@@ -33,9 +33,12 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: docs
-          name: github-pages-${{ github.run_attempt }}
+          name: github-pages-${{ github.run_id }}-${{ github.run_attempt }}
+
+      - name: Allow artifact metadata to propagate
+        run: sleep 5
 
       - name: Deploy Pages
         uses: actions/deploy-pages@v4
         with:
-          artifact_name: github-pages-${{ github.run_attempt }}
+          artifact_name: github-pages-${{ github.run_id }}-${{ github.run_attempt }}
