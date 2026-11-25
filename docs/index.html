@@ -51,7 +51,7 @@ th:first-child,td:first-child{text-align:left}
 <div class="card" id="yoyCard">
  <h2 id="yoyTitle">Year-over-Year Monthly Production</h2>
  <div class="controls">
-  <label>View <select id="yoyView"><option value="monthly" selected>Year-over-year monthly</option><option value="quarterly">Quarter-over-quarter</option></select></label>
+  <label>View <select id="yoyView"><option value="monthly" selected>Year-over-year monthly</option><option value="quarterly">Quarter-over-quarter</option><option value="annual">Year-over-year (annual)</option></select></label>
   <label id="yoyFromLabel">From year <select id="yoyFrom"></select></label><label id="yoyToLabel">To year <select id="yoyTo"></select></label>
  </div>
  <canvas id="yearChart"></canvas><p class="hint" id="yoyHint"></p>
@@ -92,48 +92,35 @@ function averageByMonth(from,to){const result={};for(let m=1;m<=12;m++){const va
 function renderSummary(s){if(!s)return;byId("tileMonth").innerHTML=`<div class="tile-label">This Month</div><div class="tile-value">${kwh(s.this_month_kwh)}</div><div class="tile-dollars">${usd(s.this_month_kwh)}</div>`;byId("tileYear").innerHTML=`<div class="tile-label">This Year</div><div class="tile-value">${kwh(s.this_year_kwh)}</div><div class="tile-dollars">${usd(s.this_year_kwh)}</div>`;byId("tileLifetime").innerHTML=`<div class="tile-label">Lifetime</div><div class="tile-value">${kwh(s.lifetime_kwh)}</div><div class="tile-dollars">${usd(s.lifetime_kwh)}</div>`;if(s.last_date)byId("summaryUpdated").textContent="Updated "+s.last_date;}
 function renderDaily(){const all=records().filter(r=>r.period==="day"&&r.energy_kwh!==""&&r.energy_kwh!==null).sort((a,b)=>a.date.localeCompare(b.date));if(!all.length)return;const last=all[all.length-1].date;let from=byId("dailyFrom").value,to=byId("dailyTo").value;const preset=byId("dailyPreset").value;if(preset!=="custom"){to=last;if(preset==="all")from=all[0].date;else{const d=new Date(last+"T12:00:00");d.setDate(d.getDate()-Number(preset)+1);from=d.toISOString().slice(0,10);}byId("dailyFrom").value=from;byId("dailyTo").value=to;}const filtered=all.filter(r=>r.date>=from&&r.date<=to);if(dailyChart)dailyChart.destroy();dailyChart=new Chart(byId("dailyChart"),{type:"bar",data:{labels:filtered.map(r=>r.date),datasets:[{label:"kWh",data:filtered.map(r=>Number(r.energy_kwh)),backgroundColor:COLORS[0]}]},options:{responsive:true,maintainAspectRatio:true,plugins:{legend:{display:false}},scales:{x:{ticks:{maxTicksLimit:12,maxRotation:45,minRotation:0}}}}});byId("dailyHint").textContent=filtered.length?`${filtered.length} daily readings · ${fmt(filtered.reduce((s,r)=>s+Number(r.energy_kwh),0))} kWh in selected period`:"No daily readings in this date range.";}
 function renderYoy(){
- const quarterly=byId("yoyView").value==="quarterly";
- byId("yoyTitle").textContent=quarterly?"Quarter-over-Quarter Production":"Year-over-Year Monthly Production";
+ const view=byId("yoyView").value,quarterly=view==="quarterly",annual=view==="annual";
+ byId("yoyTitle").textContent=quarterly?"Quarter-over-Quarter Production":annual?"Year-over-Year Annual Production":"Year-over-Year Monthly Production";
  byId("yoyFromLabel").style.display=quarterly?"none":"";
  byId("yoyToLabel").style.display=quarterly?"none":"";
  let labels,datasets;
  if(quarterly){
   labels=["Q1","Q2","Q3","Q4"];
-  const yearList=years();
-  datasets=yearList.map((year,i)=>{
+  datasets=years().map((year,i)=>{
    const months=monthMap()[year]||{},totals=[0,0,0,0],counts=[0,0,0,0];
-   for(let month=1;month<=12;month++){
-    const value=months[String(month).padStart(2,"0")];
-    if(value===undefined||value===null||value==="")continue;
-    const q=Math.floor((month-1)/3);
-    totals[q]+=Number(value);
-    counts[q]++;
-   }
-   return {
-    label:year,
-    data:totals.map((total,q)=>counts[q]?total:null),
-    borderColor:COLORS[i%COLORS.length],
-    backgroundColor:COLORS[i%COLORS.length],
-    borderWidth:1,
-    _monthCounts:counts
-   };
+   for(let month=1;month<=12;month++){const value=months[String(month).padStart(2,"0")];if(value===undefined||value===null||value==="")continue;const q=Math.floor((month-1)/3);totals[q]+=Number(value);counts[q]++;}
+   return {label:year,data:totals.map((total,q)=>counts[q]?total:null),borderColor:COLORS[i%COLORS.length],backgroundColor:COLORS[i%COLORS.length],borderWidth:1,_monthCounts:counts};
   });
-  byId("yoyHint").textContent="Each line is a year; compare Q1 with Q1, Q2 with Q2, and so on. Incomplete quarters are included using available months.";
+  byId("yoyHint").textContent="Compare the same quarter across years. Incomplete quarters use available months.";
  }else{
-  const [from,to]=selectedRange("yoyFrom","yoyTo");
-  const list=years().filter(y=>Number(y)>=from&&Number(y)<=to);
-  labels=MONTHS.slice(1);
-  datasets=list.map((y,i)=>({label:y,data:Array.from({length:12},(_,m)=>monthMap()[y]?.[String(m+1).padStart(2,"0")]??null),tension:.2,borderColor:COLORS[i%COLORS.length],backgroundColor:COLORS[i%COLORS.length]}));
-  byId("yoyHint").textContent="";
+  const [from,to]=selectedRange("yoyFrom","yoyTo"),list=years().filter(y=>Number(y)>=from&&Number(y)<=to);
+  if(annual){
+   labels=list;
+   datasets=[{label:"Annual production",data:list.map(y=>Object.values(monthMap()[y]||{}).reduce((sum,v)=>sum+(v===""||v==null?0:Number(v)),0)),backgroundColor:COLORS[0]}];
+   byId("yoyHint").textContent="Annual totals by year. The current year may be incomplete.";
+  }else{
+   labels=MONTHS.slice(1);
+   datasets=list.map((y,i)=>({label:y,data:Array.from({length:12},(_,m)=>monthMap()[y]?.[String(m+1).padStart(2,"0")]??null),tension:.2,borderColor:COLORS[i%COLORS.length],backgroundColor:COLORS[i%COLORS.length]}));
+   byId("yoyHint").textContent="";
+  }
  }
  if(yoyChart)yoyChart.destroy();
- yoyChart=new Chart(byId("yearChart"),{type:quarterly?"bar":"line",data:{labels,datasets},options:{responsive:true,interaction:{mode:"index",intersect:false},scales:{x:{stacked:false,ticks:{autoSkip:false,maxRotation:0,minRotation:0,font:{size:9}}},y:{beginAtZero:true}},plugins:{tooltip:{callbacks:{label:ctx=>{
-  const value=Number(ctx.raw);
-  if(!quarterly)return ctx.dataset.label+": "+fmt(value)+" kWh";
-  const counts=ctx.dataset._monthCounts||[],q=ctx.dataIndex;
-  const partial=counts[q]<3?" ("+counts[q]+" of 3 months)": "";
-  const previous=q>0?Number(ctx.dataset.data[q-1]):null;
-  const change=previous!==null&&previous!==0?" · "+(value>=previous?"+":"")+fmt((value/previous-1)*100)+"% vs prior quarter":"";
+ yoyChart=new Chart(byId("yearChart"),{type:quarterly?"bar":annual?"bar":"line",data:{labels,datasets},options:{responsive:true,interaction:{mode:"index",intersect:false},scales:{x:{stacked:false,ticks:{autoSkip:false,maxRotation:0,minRotation:0,font:{size:9}}},y:{beginAtZero:true}},plugins:{tooltip:{callbacks:{label:ctx=>{
+  const value=Number(ctx.raw);if(annual)return ctx.label+": "+fmt(value)+" kWh";if(!quarterly)return ctx.dataset.label+": "+fmt(value)+" kWh";
+  const counts=ctx.dataset._monthCounts||[],q=ctx.dataIndex,partial=counts[q]<3?" ("+counts[q]+" of 3 months)": "",previous=q>0?Number(ctx.dataset.data[q-1]):null,change=previous!==null&&previous!==0?" · "+(value>=previous?"+":"")+fmt((value/previous-1)*100)+"% vs prior quarter":"";
   return ctx.dataset.label+": "+fmt(value)+" kWh"+partial+change;
  }}}}}});
 }
